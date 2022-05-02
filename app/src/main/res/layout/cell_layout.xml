@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutID"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:background="@drawable/cell_corners">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@null"
+        android:maxLength="1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="40sp" />
+</RelativeLayout>

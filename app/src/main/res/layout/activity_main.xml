@@ -15,4 +15,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.Scrip0.numble.Cell
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints"
+        android:id="@+id/CELL">
+
+    </com.Scrip0.numble.Cell>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
