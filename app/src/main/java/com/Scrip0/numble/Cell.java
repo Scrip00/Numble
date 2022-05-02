@@ -8,6 +8,7 @@ import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -25,6 +26,9 @@ public class Cell extends FrameLayout {
 
     private String content;
     private EditText textField;
+    private Cell next;
+    private String prevContent;
+    private boolean restoredText;
 
     public Cell(@NonNull Context context) {
         super(context);
@@ -49,6 +53,22 @@ public class Cell extends FrameLayout {
     private void initView() {
         inflate(getContext(), R.layout.cell_layout, this);
         textField = findViewById(R.id.editText);
+        textField.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b && textField.getText().length() == 1) {
+                    prevContent = String.valueOf(textField.getText());
+                    restoredText = false;
+                    textField.setText("");
+                }
+
+                if (!b && textField.getText().length() == 0) {
+                    restoredText = true;
+                    textField.setText(prevContent);
+                }
+
+            }
+        });
         textField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -62,11 +82,18 @@ public class Cell extends FrameLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (textField.getText().length() == 1) {
+                if (textField.getText().length() == 1 && !restoredText) {
                     textField.clearFocus();
+                    if (next != null) {
+                        next.setFocus();
+                    }
                 }
             }
         });
+    }
+
+    public void setFocus() {
+        textField.requestFocus();
     }
 
     public void enableFocus() {
@@ -75,6 +102,10 @@ public class Cell extends FrameLayout {
 
     public void disableFocus() {
         textField.setEnabled(false);
+    }
+
+    public void setNext(Cell cell) {
+        next = cell;
     }
 
     public void setBackground(int background) {
