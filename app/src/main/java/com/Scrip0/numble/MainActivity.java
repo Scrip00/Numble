@@ -3,8 +3,10 @@ package com.Scrip0.numble;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.GridLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,7 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Cell cell = findViewById(R.id.CELL);
+        GridLayout gridLayout = findViewById(R.id.grid_layout);
+        CellManager manager = new CellManager(this, gridLayout, 3, 3);
 
     }
 }
