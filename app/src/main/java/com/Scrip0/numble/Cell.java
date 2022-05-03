@@ -10,8 +10,10 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,10 +26,10 @@ public class Cell extends FrameLayout {
     public static final int CLOSE = 2;
     public static final int RIGHT = 3;
 
-    private String content;
     private EditText textField;
     private Cell next;
     private String prevContent;
+    private RelativeLayout layout;
     private boolean restoredText;
 
     public Cell(@NonNull Context context) {
@@ -52,6 +54,7 @@ public class Cell extends FrameLayout {
 
     private void initView() {
         inflate(getContext(), R.layout.cell_layout, this);
+        layout = findViewById(R.id.layoutID);
         textField = findViewById(R.id.editText);
         textField.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -69,6 +72,7 @@ public class Cell extends FrameLayout {
 
             }
         });
+
         textField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -108,19 +112,30 @@ public class Cell extends FrameLayout {
         next = cell;
     }
 
+    public String getContent() {
+        return String.valueOf(textField.getText());
+    }
+
+    public void setSize(int width, int height) {
+        ViewGroup.LayoutParams params = layout.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        layout.setLayoutParams(params);
+    }
+
     public void setBackground(int background) {
         switch (background) {
             case DEFAULT:
-                findViewById(R.id.layoutID).getBackground().setColorFilter(getResources().getColor(R.color.cell_default), PorterDuff.Mode.MULTIPLY);
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.cell_default), PorterDuff.Mode.MULTIPLY);
                 break;
             case WRONG:
-                findViewById(R.id.layoutID).getBackground().setColorFilter(getResources().getColor(R.color.cell_wrong), PorterDuff.Mode.MULTIPLY);
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.cell_wrong), PorterDuff.Mode.MULTIPLY);
                 break;
             case CLOSE:
-                findViewById(R.id.layoutID).getBackground().setColorFilter(getResources().getColor(R.color.cell_close), PorterDuff.Mode.MULTIPLY);
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.cell_close), PorterDuff.Mode.MULTIPLY);
                 break;
             case RIGHT:
-                findViewById(R.id.layoutID).getBackground().setColorFilter(getResources().getColor(R.color.cell_right), PorterDuff.Mode.MULTIPLY);
+                layout.getBackground().setColorFilter(getResources().getColor(R.color.cell_right), PorterDuff.Mode.MULTIPLY);
                 break;
         }
     }

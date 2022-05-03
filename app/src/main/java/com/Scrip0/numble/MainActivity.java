@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         GridLayout gridLayout = findViewById(R.id.grid_layout);
-        CellManager manager = new CellManager(this, gridLayout, 4, 3);
-
+        CellManager manager = new CellManager(this, gridLayout, 20, 3);
     }
 }
