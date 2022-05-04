@@ -1,7 +1,6 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.LinearLayout;
 
 public class Keyboard extends LinearLayout implements View.OnClickListener {
 
-    // constructors
     public Keyboard(Context context) {
         this(context, null, 0);
     }
@@ -26,7 +24,6 @@ public class Keyboard extends LinearLayout implements View.OnClickListener {
         init(context, attrs);
     }
 
-    // keyboard keys (buttons)
     private Button mButton1;
     private Button mButton2;
     private Button mButton3;

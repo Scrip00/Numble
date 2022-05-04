@@ -1,11 +1,12 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -15,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class Cell extends FrameLayout {
 
@@ -49,7 +49,6 @@ public class Cell extends FrameLayout {
                     textField.setTextIsSelectable(true);
                     textField.setShowSoftInputOnFocus(false);
 
-                    // pass the InputConnection from the EditText to the keyboard
                     InputConnection ic = textField.onCreateInputConnection(new EditorInfo());
                     keyboard.setInputConnection(ic);
                 }
@@ -119,7 +118,13 @@ public class Cell extends FrameLayout {
         params.width = width;
         params.height = height;
         layout.setLayoutParams(params);
+        textField.setTextSize((float) width / 6);
+
+        GradientDrawable background = (GradientDrawable) layout.getBackground();
+        background.setCornerRadius((float) width / 5);
+        background.setStroke(width / 14, Color.BLACK);
     }
+
 
     public void setBackground(int background) {
         switch (background) {

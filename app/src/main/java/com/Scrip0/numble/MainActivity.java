@@ -2,11 +2,7 @@ package com.Scrip0.numble;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.Toast;
@@ -32,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Keyboard keyboard = findViewById(R.id.keyboard);
 
         String equation = "1+5=6";
-        CellManager manager = new CellManager(this, gridLayout, 7, 5, equation, keyboard);
+        CellManager manager = new CellManager(this, gridLayout, 20, 20, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
