@@ -3,10 +3,13 @@ package com.Scrip0.numble;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -26,24 +29,11 @@ public class Cell extends FrameLayout {
     private String prevContent;
     private RelativeLayout layout;
     private boolean restoredText;
+    private final Keyboard keyboard;
 
-    public Cell(@NonNull Context context) {
+    public Cell(@NonNull Context context, Keyboard keyboard) {
         super(context);
-        initView();
-    }
-
-    public Cell(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-    }
-
-    public Cell(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView();
-    }
-
-    public Cell(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+        this.keyboard = keyboard;
         initView();
     }
 
@@ -54,6 +44,15 @@ public class Cell extends FrameLayout {
         textField.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
+                if (b) {
+                    textField.setRawInputType(InputType.TYPE_CLASS_TEXT);
+                    textField.setTextIsSelectable(true);
+                    textField.setShowSoftInputOnFocus(false);
+
+                    // pass the InputConnection from the EditText to the keyboard
+                    InputConnection ic = textField.onCreateInputConnection(new EditorInfo());
+                    keyboard.setInputConnection(ic);
+                }
                 if (b && textField.getText().length() == 1) {
                     prevContent = String.valueOf(textField.getText());
                     restoredText = false;
@@ -109,6 +108,10 @@ public class Cell extends FrameLayout {
 
     public String getContent() {
         return String.valueOf(textField.getText());
+    }
+
+    public EditText getEditText() {
+        return textField;
     }
 
     public void setSize(int width, int height) {

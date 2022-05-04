@@ -1,8 +1,11 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.widget.GridLayout;
 
 public class CellManager {
@@ -13,13 +16,15 @@ public class CellManager {
     private final int rowCount;
     private final int columnCount;
     private final String equation;
+    private final Keyboard keyboard;
 
-    public CellManager(Context context, GridLayout gridLayout, int rowCount, int columnCount, String equation) {
+    public CellManager(Context context, GridLayout gridLayout, int rowCount, int columnCount, String equation, Keyboard keyboard) {
         this.context = context;
         this.gridLayout = gridLayout;
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.equation = equation;
+        this.keyboard = keyboard;
         grid = new Cell[rowCount][columnCount];
         gridLayout.setRowCount(rowCount);
         gridLayout.setColumnCount(columnCount);
@@ -34,7 +39,7 @@ public class CellManager {
                 int width = calculateCellWidth();
                 for (int k = 0; k < rowCount; k++) {
                     for (int j = 0; j < columnCount; j++) {
-                        Cell temp = new Cell(context);
+                        Cell temp = new Cell(context, keyboard);
                         temp.setSize(width, width);
                         GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
                         temp.setLayoutParams(param);
