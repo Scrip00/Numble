@@ -1,23 +1,25 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.GridLayout;
 
 public class CellManager {
-    private Context context;
-    private GridLayout gridLayout;
-    private Cell[][] grid;
-    private int currentRow, rowCount, columnCount;
+    private final Context context;
+    private final GridLayout gridLayout;
+    private final Cell[][] grid;
+    private int currentRow;
+    private final int rowCount;
+    private final int columnCount;
+    private final String equation;
 
-    public CellManager(Context context, GridLayout gridLayout, int rowCount, int columnCount) {
+    public CellManager(Context context, GridLayout gridLayout, int rowCount, int columnCount, String equation) {
         this.context = context;
         this.gridLayout = gridLayout;
         this.rowCount = rowCount;
         this.columnCount = columnCount;
+        this.equation = equation;
         grid = new Cell[rowCount][columnCount];
         gridLayout.setRowCount(rowCount);
         gridLayout.setColumnCount(columnCount);
@@ -52,10 +54,33 @@ public class CellManager {
     }
 
     public boolean hasNext() {
-        return currentRow != columnCount - 1;
+        return currentRow != rowCount - 1;
+    }
+
+    public boolean reachedEnd() {
+        return currentRow == rowCount;
     }
 
     public boolean next() {
-        return false;
+        boolean won = true;
+        for (int i = 0; i < columnCount; i++) {
+            Cell temp = grid[currentRow][i];
+            temp.disableFocus();
+            if (equation.charAt(i) == temp.getContent().charAt(0)) {
+                temp.setBackground(Cell.RIGHT);
+            } else if (equation.contains(temp.getContent())) {
+                won = false;
+                temp.setBackground(Cell.CLOSE);
+            } else {
+                won = false;
+                temp.setBackground(Cell.WRONG);
+            }
+            if (hasNext()) {
+                temp = grid[currentRow + 1][i];
+                temp.enableFocus();
+            }
+        }
+        currentRow++;
+        return won;
     }
 }
