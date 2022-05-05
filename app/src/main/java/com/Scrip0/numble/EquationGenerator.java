@@ -1,5 +1,7 @@
 package com.Scrip0.numble;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -44,18 +46,30 @@ public class EquationGenerator {
     private void addSum() {
         // TODO add expansion
         if (length - equation.length() < 2) return;
-
+        int index = pickRandomNumber();
+        int number = getNumberFromEquation(index);
+        int random = getRandomNumber(1, number);
+        equation = equation.substring(0, index) + random + "+" + String.valueOf(number - random) + equation.substring(index + 1);
     }
 
     private int pickRandomNumber() {
         ArrayList<Integer> numbers = new ArrayList<>();
         if (isNumber(equation.charAt(0))) numbers.add(0);
         for (int i = 1; i < equation.length(); i++) {
-            if (isNumber(equation.charAt(i)) && !isNumber(equation.charAt(i - 1))){
+            if (isNumber(equation.charAt(i)) && !isNumber(equation.charAt(i - 1))) {
                 numbers.add(i);
             }
         }
-        return numbers.get(getRandomNumber(0, numbers.size()));
+        return numbers.get(getRandomNumber(0, numbers.size() - 1));
+    }
+
+    private int getNumberFromEquation(int i) {
+        String number = "";
+        while (i != equation.length() && isNumber(equation.charAt(i))) {
+            number += equation.charAt(i);
+            i++;
+        }
+        return Integer.parseInt(number);
     }
 
     private boolean isNumber(char c) {

@@ -2,6 +2,7 @@ package com.Scrip0.numble;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -26,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
         GridLayout gridLayout = findViewById(R.id.grid_layout);
 
         Keyboard keyboard = findViewById(R.id.keyboard);
-
-        String equation = "1+5=6";
+        for (int i = 0; i < 10; i++) {
+            Log.d("TEST", new EquationGenerator(5).getEquation());
+        }
+        String equation = new EquationGenerator(5).getEquation();
         CellManager manager = new CellManager(this, gridLayout, 6, 5, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
