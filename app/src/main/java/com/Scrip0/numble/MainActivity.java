@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         Keyboard keyboard = findViewById(R.id.keyboard);
 
         String equation = "1+5=6";
-        CellManager manager = new CellManager(this, gridLayout, 20, 20, equation, keyboard);
+        CellManager manager = new CellManager(this, gridLayout, 6, 5, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
