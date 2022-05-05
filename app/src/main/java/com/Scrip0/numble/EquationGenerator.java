@@ -1,13 +1,18 @@
 package com.Scrip0.numble;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class EquationGenerator {
     private String equation;
+    private int length;
     private final String[] operators = new String[]{"+", "-", "*", "/", "^", "!"};
 
     public EquationGenerator(int length) {
-        if (length < 3) {
+        if (length < 3)
             throw new IllegalArgumentException();
-        }
+
+        this.length = length;
         equation = "";
         initializeEquation();
         generateEquation(length);
@@ -18,21 +23,44 @@ public class EquationGenerator {
             int random = getRandomNumber(0, 7);
             switch (random) {
                 case (0):
-                break;
+                    addSum();
+                    break;
                 case (1):
-                break;
+                    break;
                 case (2):
-                break;
+                    break;
                 case (3):
-                break;
+                    break;
                 case (4):
-                break;
+                    break;
                 case (5):
-                break;
+                    break;
                 case (6):
-                break;
+                    break;
             }
         }
+    }
+
+    private void addSum() {
+        // TODO add expansion
+        if (length - equation.length() < 2) return;
+
+    }
+
+    private int pickRandomNumber() {
+        ArrayList<Integer> numbers = new ArrayList<>();
+        if (isNumber(equation.charAt(0))) numbers.add(0);
+        for (int i = 1; i < equation.length(); i++) {
+            if (isNumber(equation.charAt(i)) && !isNumber(equation.charAt(i - 1))){
+                numbers.add(i);
+            }
+        }
+        return numbers.get(getRandomNumber(0, numbers.size()));
+    }
+
+    private boolean isNumber(char c) {
+        ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        return numbers.contains(c);
     }
 
     private void initializeEquation() {
