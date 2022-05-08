@@ -31,6 +31,7 @@ public class EquationGenerator {
                     addSubtraction();
                     break;
                 case (2):
+                    addMultiplication();
                     break;
                 case (3):
                     break;
@@ -42,6 +43,20 @@ public class EquationGenerator {
                     break;
             }
         }
+    }
+
+    private void addMultiplication() {
+        if (length - equation.length() < 2) return;
+        int index = pickRandomNumber();
+        int number = getNumberFromEquation(index);
+        if (number < 6) return;
+        String equation;
+        equation = this.equation;
+        int random = pickRandomDivider(number);
+        if (random == 1) return;
+        equation = equation.substring(0, index) + number / random + "*" + random + equation.substring(index + calcNumLen(number));
+        if (equation.length() <= length)
+            this.equation = equation;
     }
 
     private void addSubtraction() {
@@ -107,6 +122,17 @@ public class EquationGenerator {
             this.equation = equation;
         }
         Log.d("TEST", this.equation);
+    }
+
+    private int pickRandomDivider(int n) {
+        ArrayList<Integer> dividers = new ArrayList<>();
+        for (int i = 1; i < Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                dividers.add(i);
+            }
+        }
+        int rand = getRandomNumber(0, dividers.size());
+        return dividers.get(rand);
     }
 
     private int pickRandomNumber() {
