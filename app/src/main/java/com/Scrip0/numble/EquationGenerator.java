@@ -28,7 +28,7 @@ public class EquationGenerator {
                     addSum();
                     break;
                 case (1):
-//                    addSubtraction();
+                    addSubtraction();
                     break;
                 case (2):
                     break;
@@ -46,24 +46,41 @@ public class EquationGenerator {
 
     private void addSubtraction() {
         // TODO add expansion, recalc function, restart
-
-        if (length - equation.length() < 2) return;
-        int index = pickRandomNumber();
-        int number = getNumberFromEquation(index);
-        String equation;
-        do {
-            equation = this.equation;
-            int random = getRandomNumber(1, 999);
-            equation = equation.substring(0, index) + random + "-" + (random - number) + equation.substring(index + calcNumLen(random));
-        } while (equation.length() > length);
-        this.equation = equation;
+        int choice = getRandomNumber(0, 100);
+        if (choice < 10) {
+            String equation = this.equation;
+            String[] sides = equation.split("=");
+            int answer = Integer.parseInt(sides[1]);
+            int random = getRandomNumber(1, answer);
+            answer -= random;
+            int index = pickRandomNumber();
+            int number = getNumberFromEquation(index);
+            int numLen = calcNumLen(number);
+            number -= random;
+            if (number < 1) return;
+            equation = sides[0].substring(0, index) + number + sides[0].substring(index + numLen) + "=" + answer;
+            if (equation.length() <= length) this.equation = equation;
+        } else {
+            if (length - equation.length() < 2) return;
+            int index = pickRandomNumber();
+            int number = getNumberFromEquation(index);
+            if (number == 1) return;
+            String equation;
+            do {
+                equation = this.equation;
+                int random = getRandomNumber(number + 1, 999);
+                equation = equation.substring(0, index) + random + "-" + (random - number) + equation.substring(index + calcNumLen(number));
+            } while (equation.length() > length);
+            this.equation = equation;
+        }
+        Log.d("TEST", this.equation);
 
     }
 
     private void addSum() {
         // TODO add expansion, recalc function, restart
-        int choice = getRandomNumber(0, 2);
-        if (choice == 0) {
+        int choice = getRandomNumber(0, 100);
+        if (choice < 10) {
             String equation = this.equation;
             String[] sides = equation.split("=");
             int answer = Integer.parseInt(sides[1]);
