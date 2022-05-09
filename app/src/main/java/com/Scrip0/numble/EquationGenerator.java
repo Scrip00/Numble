@@ -51,9 +51,7 @@ public class EquationGenerator {
         if (length - equation.length() < 2) return;
         int index = pickRandomNumber();
         int number = getNumberFromEquation(index);
-        if (number < 6) {
-            return;
-        }
+        if (number < 2) return;
         String equation;
         int random;
         equation = this.equation;
@@ -144,7 +142,7 @@ public class EquationGenerator {
         if (index != equation.length() - 1) {
             int numLen = calcNumLen(number);
             if ((index + numLen) < equation.length())
-                Log.d("TEST", equation.charAt(index + numLen) + " " + index + " " +  numLen + " " + equation);
+                Log.d("TEST", equation.charAt(index + numLen) + " " + index + " " + numLen + " " + equation);
             if ((index + numLen) < equation.length() && (equation.charAt(index + numLen) == '*' || equation.charAt(index + numLen) == '\\' || equation.charAt(index + numLen) == '^' || equation.charAt(index + numLen) == '!'))
                 return true;
         }

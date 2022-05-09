@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayout gridLayout = findViewById(R.id.grid_layout);
 
         Keyboard keyboard = findViewById(R.id.keyboard);
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             Log.d("TESTT", new EquationGenerator(7).getEquation());
             Log.d("TEST", "  ");
         }
