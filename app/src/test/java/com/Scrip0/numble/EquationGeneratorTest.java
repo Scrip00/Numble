@@ -34,4 +34,11 @@ public class EquationGeneratorTest {
         int result = solver.getHighestEquationValueIndex(equation, values);
         assertEquals(1, result);
     }
+
+    @Test
+    public void testSolveOneTask() {
+        EquationSolver solver = new EquationSolver();
+        String equation = "12+123-14";
+        assertEquals("135-14", solver.solveOneTask(equation, 2));
+    }
 }

@@ -1,5 +1,7 @@
 package com.Scrip0.numble;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class EquationSolver {
@@ -15,8 +17,10 @@ public class EquationSolver {
         while (str.contains("(")) {
             int[] indexes = getBracketEquation(str);
             String subEquation = str.substring(indexes[0], indexes[1] + 1);
-            while (!equationSolved(str, values)) {
+            while (!equationSolved(subEquation, values)) {
+                subEquation = solveOneTask(subEquation, getHighestEquationValueIndex(subEquation, values));
             }
+            // TODO add subequation to equation
         }
 
         return 0;
@@ -60,7 +64,56 @@ public class EquationSolver {
         return index;
     }
 
-    public void solveOneTask(String str, int index) {
+    public String solveOneTask(String str, int index) {
+        switch (str.charAt(index)) {
+            case '+':
+                int sum = getNumberFromString(str, getNumberStartIndex(str, index - 1)) + getNumberFromString(str, index + 1);
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + sum + str.substring(index + getNumberLength(str, index + 1) + 1);
+                break;
+            case '-':
+                break;
+            case '*':
+                break;
+            case '/':
+                break;
+            case '^':
+                break;
+            case '!':
+                break;
+        }
+        return str;
+    }
 
+    private int getNumberFromString(String str, int startIndex){
+        String number = "";
+        ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        for (int i = startIndex; i < str.length() - 1; i++) {
+            if (numbers.contains(str.charAt(i))) {
+                number += str.charAt(i);
+            } else break;
+        }
+        return Integer.parseInt(number);
+    }
+
+    private int getNumberStartIndex(String str, int index) {
+        int startIndex = index;
+        ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        for (int i = index - 1; i >= 0; i--) {
+            if (numbers.contains(str.charAt(i))) {
+                startIndex--;
+            } else break;
+        }
+        return startIndex;
+    }
+
+    private int getNumberLength(String str, int startIndex) {
+        int length = 1;
+        ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        for (int i = startIndex + 1; i < str.length() - 1; i++) {
+            if (numbers.contains(str.charAt(i))) {
+                length++;
+            } else break;
+        }
+        return length;
     }
 }
