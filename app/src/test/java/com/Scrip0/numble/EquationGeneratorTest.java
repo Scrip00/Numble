@@ -41,5 +41,11 @@ public class EquationGeneratorTest {
         String equation = "12+123-14";
         assertEquals("135-14", solver.solveOneTask(equation, 2));
         assertEquals("12+109", solver.solveOneTask(equation, 6));
+        equation = "11*10/5";
+        assertEquals("110/5", solver.solveOneTask(equation, 2));
+        assertEquals("11*2", solver.solveOneTask(equation, 5));
+        equation = "2^4!";
+        assertEquals("16!", solver.solveOneTask(equation, 1));
+        assertEquals("2^24", solver.solveOneTask(equation, 3));
     }
 }

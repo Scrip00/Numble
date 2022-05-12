@@ -76,15 +76,32 @@ public class EquationSolver {
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '*':
+                result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) * getNumberFromString(str, index + 1);
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '/':
+                // Assume that division results in integer
+                result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) / getNumberFromString(str, index + 1);
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '^':
+                result = (int) Math.pow(getNumberFromString(str, getNumberStartIndex(str, index - 1)), getNumberFromString(str, index + 1));
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '!':
+                result = calcFactorial(getNumberFromString(str, getNumberStartIndex(str, index - 1)));
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + 1);
                 break;
         }
         return str;
+    }
+
+    private int calcFactorial(int n) {
+        int result = 1;
+        for (int i = 2; i <= n; i++) {
+            result*=i;
+        }
+        return result;
     }
 
     private int getNumberFromString(String str, int startIndex) {
