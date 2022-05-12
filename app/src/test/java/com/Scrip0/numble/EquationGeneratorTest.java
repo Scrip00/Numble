@@ -40,5 +40,6 @@ public class EquationGeneratorTest {
         EquationSolver solver = new EquationSolver();
         String equation = "12+123-14";
         assertEquals("135-14", solver.solveOneTask(equation, 2));
+        assertEquals("12+109", solver.solveOneTask(equation, 6));
     }
 }

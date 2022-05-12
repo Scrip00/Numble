@@ -65,12 +65,15 @@ public class EquationSolver {
     }
 
     public String solveOneTask(String str, int index) {
+        int result;
         switch (str.charAt(index)) {
             case '+':
-                int sum = getNumberFromString(str, getNumberStartIndex(str, index - 1)) + getNumberFromString(str, index + 1);
-                str = str.substring(0, getNumberStartIndex(str, index - 1)) + sum + str.substring(index + getNumberLength(str, index + 1) + 1);
+                result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) + getNumberFromString(str, index + 1);
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '-':
+                result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) - getNumberFromString(str, index + 1);
+                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '*':
                 break;
@@ -84,10 +87,10 @@ public class EquationSolver {
         return str;
     }
 
-    private int getNumberFromString(String str, int startIndex){
+    private int getNumberFromString(String str, int startIndex) {
         String number = "";
         ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
-        for (int i = startIndex; i < str.length() - 1; i++) {
+        for (int i = startIndex; i <= str.length() - 1; i++) {
             if (numbers.contains(str.charAt(i))) {
                 number += str.charAt(i);
             } else break;
@@ -109,7 +112,7 @@ public class EquationSolver {
     private int getNumberLength(String str, int startIndex) {
         int length = 1;
         ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
-        for (int i = startIndex + 1; i < str.length() - 1; i++) {
+        for (int i = startIndex + 1; i <= str.length() - 1; i++) {
             if (numbers.contains(str.charAt(i))) {
                 length++;
             } else break;
