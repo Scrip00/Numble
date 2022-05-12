@@ -31,7 +31,7 @@ public class EquationGeneratorTest {
         values.put('*', 2);
         values.put('/', 2);
         values.put('^', 3);
-        values.put('!', 3);
+        values.put('!', 4);
         int result = solver.getHighestEquationValueIndex(equation, values);
         assertEquals(1, result);
     }
