@@ -20,6 +20,7 @@ public class EquationGeneratorTest {
         assertEquals(7, result[0]);
         assertEquals(12, result[1]);
     }
+
     @Test
     public void testGetHighestEquationValueIndex() {
         EquationSolver solver = new EquationSolver();
@@ -47,5 +48,12 @@ public class EquationGeneratorTest {
         equation = "2^4!";
         assertEquals("16!", solver.solveOneTask(equation, 1));
         assertEquals("2^24", solver.solveOneTask(equation, 3));
+    }
+
+    @Test
+    public void testSolve() {
+        EquationSolver solver = new EquationSolver();
+        String equation = "2+3*(3!/(7-5))+4*(2^3!)/4";
+        assertEquals(75, solver.solve(equation));
     }
 }

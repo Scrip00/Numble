@@ -13,17 +13,19 @@ public class EquationSolver {
         values.put('*', 2);
         values.put('/', 2);
         values.put('^', 3);
-        values.put('!', 3);
+        values.put('!', 4);
         while (str.contains("(")) {
             int[] indexes = getBracketEquation(str);
-            String subEquation = str.substring(indexes[0], indexes[1] + 1);
+            String subEquation = str.substring(indexes[0] + 1, indexes[1]);
             while (!equationSolved(subEquation, values)) {
                 subEquation = solveOneTask(subEquation, getHighestEquationValueIndex(subEquation, values));
             }
-            // TODO add subequation to equation
+            str = str.substring(0, indexes[0]) + subEquation + str.substring(indexes[1] + 1);
         }
-
-        return 0;
+        while (!equationSolved(str, values)) {
+            str = solveOneTask(str, getHighestEquationValueIndex(str, values));
+        }
+        return Integer.parseInt(str);
     }
 
     public int[] getBracketEquation(String str) {
@@ -99,7 +101,7 @@ public class EquationSolver {
     private int calcFactorial(int n) {
         int result = 1;
         for (int i = 2; i <= n; i++) {
-            result*=i;
+            result *= i;
         }
         return result;
     }
