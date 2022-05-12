@@ -12,8 +12,11 @@ public class EquationSolver {
         values.put('/', 2);
         values.put('^', 3);
         values.put('!', 3);
-        while (str.contains("(")){
-
+        while (str.contains("(")) {
+            int[] indexes = getBracketEquation(str);
+            String subEquation = str.substring(indexes[0], indexes[1] + 1);
+            while (!equationSolved(str, values)) {
+            }
         }
 
         return 0;
@@ -36,5 +39,28 @@ public class EquationSolver {
             }
         }
         return indexes;
+    }
+
+    private boolean equationSolved(String str, HashMap<Character, Integer> values) {
+        for (char c : values.keySet()) {
+            if (str.contains(String.valueOf(c))) return false;
+        }
+        return true;
+    }
+
+    public int getHighestEquationValueIndex(String str, HashMap<Character, Integer> values) {
+        int index = 0;
+        int maxIndex = -1;
+        for (int i = 0; i < str.length(); i++) {
+            if (values.containsKey(str.charAt(i)) && values.get(str.charAt(i)) > maxIndex) {
+                index = i;
+                maxIndex = values.get(str.charAt(i));
+            }
+        }
+        return index;
+    }
+
+    public void solveOneTask(String str, int index) {
+
     }
 }

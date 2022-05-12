@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -15,7 +17,21 @@ public class EquationGeneratorTest {
         EquationSolver solver = new EquationSolver();
         String equation = "1+(1-3*(3!/2))";
         int[] result = solver.getBracketEquation(equation);
-        assertEquals(result[0], 7);
-        assertEquals(result[1], 12);
+        assertEquals(7, result[0]);
+        assertEquals(12, result[1]);
+    }
+    @Test
+    public void testGetHighestEquationValueIndex() {
+        EquationSolver solver = new EquationSolver();
+        String equation = "3!/2+1";
+        HashMap<Character, Integer> values = new HashMap<>();
+        values.put('+', 1);
+        values.put('-', 1);
+        values.put('*', 2);
+        values.put('/', 2);
+        values.put('^', 3);
+        values.put('!', 3);
+        int result = solver.getHighestEquationValueIndex(equation, values);
+        assertEquals(1, result);
     }
 }
