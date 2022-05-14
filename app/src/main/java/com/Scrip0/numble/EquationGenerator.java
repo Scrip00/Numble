@@ -50,8 +50,6 @@ public class EquationGenerator {
     }
 
     private void addDivision() {
-        Log.d("TESTT", equation);
-        if (length - equation.length() < 2) return;
         int index = pickRandomNumber();
         int number = getNumberFromEquation(index);
         if (number == 1) return;
@@ -60,7 +58,7 @@ public class EquationGenerator {
         String equation = this.equation;
         equation = equation.substring(0, index) + dividend + "/" + number + equation.substring(index + calcNumLen(number));
         int answer = solver.solve(equation);
-        if (answer < 1000 && this.equation.split("=")[0].length() <= length)
+        if (answer > 0 && answer < 1000 && this.equation.split("=")[0].length() <= length && solver.isAnswerInt())
             this.equation = equation.split("=")[0] + "=" + answer;
     }
 
@@ -219,7 +217,7 @@ public class EquationGenerator {
     private int pickDivident(int number) {
         ArrayList<Integer> dividents = new ArrayList<>();
         for (int i = number * 2; i < 1000; i++) {
-            if (i / number == number * i / number) {
+            if (i % number == 0) {
                 dividents.add(i);
             }
         }

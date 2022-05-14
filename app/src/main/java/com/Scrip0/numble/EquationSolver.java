@@ -6,9 +6,12 @@ import java.util.HashMap;
 
 public class EquationSolver {
 
+    private boolean isAnswerInt;
+
 // TODO add check if valid equation method
 
     public int solve(String str) {
+        isAnswerInt = true;
         HashMap<Character, Integer> priority = new HashMap<>();
         priority.put('+', 1);
         priority.put('-', 1);
@@ -86,7 +89,8 @@ public class EquationSolver {
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '/':
-                // Assume that division results in integer
+                if (getNumberFromString(str, getNumberStartIndex(str, index - 1)) % getNumberFromString(str, index + 1) != 0)
+                    isAnswerInt = false;
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) / getNumberFromString(str, index + 1);
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
@@ -141,5 +145,9 @@ public class EquationSolver {
             } else break;
         }
         return length;
+    }
+
+    public boolean isAnswerInt() {
+        return isAnswerInt;
     }
 }

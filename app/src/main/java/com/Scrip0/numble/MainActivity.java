@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         Keyboard keyboard = findViewById(R.id.keyboard);
         for (int i = 0; i < 10; i++) {
-            Log.d("TESTT", new EquationGenerator(7).getEquation());
+            Log.d("TESTT", new EquationGenerator(21).getEquation());
             Log.d("TEST", "  ");
         }
         Log.d("TEST", "HELP");
