@@ -6,24 +6,28 @@ import java.util.HashMap;
 
 public class EquationSolver {
 
+// TODO add check if valid equation method
+
     public int solve(String str) {
-        HashMap<Character, Integer> values = new HashMap<>();
-        values.put('+', 1);
-        values.put('-', 1);
-        values.put('*', 2);
-        values.put('/', 2);
-        values.put('^', 3);
-        values.put('!', 4);
+        HashMap<Character, Integer> priority = new HashMap<>();
+        priority.put('+', 1);
+        priority.put('-', 1);
+        priority.put('*', 2);
+        priority.put('/', 2);
+        priority.put('^', 3);
+        priority.put('!', 4);
+        if (str.contains("="))
+            str = str.split("=")[0];
         while (str.contains("(")) {
             int[] indexes = getBracketEquation(str);
             String subEquation = str.substring(indexes[0] + 1, indexes[1]);
-            while (!equationSolved(subEquation, values)) {
-                subEquation = solveOneTask(subEquation, getHighestEquationValueIndex(subEquation, values));
+            while (!equationSolved(subEquation, priority)) {
+                subEquation = solveOneTask(subEquation, getHighestEquationValueIndex(subEquation, priority));
             }
             str = str.substring(0, indexes[0]) + subEquation + str.substring(indexes[1] + 1);
         }
-        while (!equationSolved(str, values)) {
-            str = solveOneTask(str, getHighestEquationValueIndex(str, values));
+        while (!equationSolved(str, priority)) {
+            str = solveOneTask(str, getHighestEquationValueIndex(str, priority));
         }
         return Integer.parseInt(str);
     }

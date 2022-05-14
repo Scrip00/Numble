@@ -8,13 +8,15 @@ import java.util.Arrays;
 public class EquationGenerator {
     private String equation;
     private int length;
-    private final String[] operators = new String[]{"+", "-", "*", "\\", "^", "!"};
+    private final String[] operators = new String[]{"+", "-", "*", "/", "^", "!"};
+    private EquationSolver solver;
 
     public EquationGenerator(int length) {
         if (length < 3)
             throw new IllegalArgumentException();
 
         this.length = length;
+        solver = new EquationSolver();
         equation = "";
         initializeEquation();
         generateEquation(length);
@@ -35,6 +37,7 @@ public class EquationGenerator {
                     addMultiplication();
                     break;
                 case (3):
+                    addDivision();
                     break;
                 case (4):
                     break;
@@ -44,6 +47,21 @@ public class EquationGenerator {
                     break;
             }
         }
+    }
+
+    private void addDivision() {
+        Log.d("TESTT", equation);
+        if (length - equation.length() < 2) return;
+        int index = pickRandomNumber();
+        int number = getNumberFromEquation(index);
+        if (number == 1) return;
+        int dividend = pickDivident(number);
+        if (dividend == -1) return;
+        String equation = this.equation;
+        equation = equation.substring(0, index) + dividend + "/" + number + equation.substring(index + calcNumLen(number));
+        int answer = solver.solve(equation);
+        if (answer < 1000 && this.equation.split("=")[0].length() <= length)
+            this.equation = equation.split("=")[0] + "=" + answer;
     }
 
     private void addMultiplication() { // 4*2=8
@@ -136,14 +154,14 @@ public class EquationGenerator {
 
     private boolean areBracketsNeeded(int index, int number) {
         if (index != 0) {
-            if (equation.charAt(index - 1) == '*' || equation.charAt(index - 1) == '\\' || equation.charAt(index - 1) == '^')
+            if (equation.charAt(index - 1) == '*' || equation.charAt(index - 1) == '/' || equation.charAt(index - 1) == '^')
                 return true;
         }
         if (index != equation.length() - 1) {
             int numLen = calcNumLen(number);
             if ((index + numLen) < equation.length())
                 Log.d("TEST", equation.charAt(index + numLen) + " " + index + " " + numLen + " " + equation);
-            if ((index + numLen) < equation.length() && (equation.charAt(index + numLen) == '*' || equation.charAt(index + numLen) == '\\' || equation.charAt(index + numLen) == '^' || equation.charAt(index + numLen) == '!'))
+            if ((index + numLen) < equation.length() && (equation.charAt(index + numLen) == '*' || equation.charAt(index + numLen) == '/' || equation.charAt(index + numLen) == '^' || equation.charAt(index + numLen) == '!'))
                 return true;
         }
         return false;
@@ -196,6 +214,17 @@ public class EquationGenerator {
             }
         }
         return numbers.get(getRandomNumber(0, numbers.size() - 1));
+    }
+
+    private int pickDivident(int number) {
+        ArrayList<Integer> dividents = new ArrayList<>();
+        for (int i = number * 2; i < 1000; i++) {
+            if (i / number == number * i / number) {
+                dividents.add(i);
+            }
+        }
+        if (dividents.size() == 0) return -1;
+        return dividents.get(getRandomNumber(0, dividents.size() - 1));
     }
 
     private int calcNumLen(int n) {

@@ -25,14 +25,14 @@ public class EquationGeneratorTest {
     public void testGetHighestEquationValueIndex() {
         EquationSolver solver = new EquationSolver();
         String equation = "3!/2+1";
-        HashMap<Character, Integer> values = new HashMap<>();
-        values.put('+', 1);
-        values.put('-', 1);
-        values.put('*', 2);
-        values.put('/', 2);
-        values.put('^', 3);
-        values.put('!', 4);
-        int result = solver.getHighestEquationValueIndex(equation, values);
+        HashMap<Character, Integer> priority = new HashMap<>();
+        priority.put('+', 1);
+        priority.put('-', 1);
+        priority.put('*', 2);
+        priority.put('/', 2);
+        priority.put('^', 3);
+        priority.put('!', 4);
+        int result = solver.getHighestEquationValueIndex(equation, priority);
         assertEquals(1, result);
     }
 
