@@ -2,7 +2,6 @@ package com.Scrip0.numble;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -28,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         Keyboard keyboard = findViewById(R.id.keyboard);
 
-        String equation = new EquationGenerator(5).getEquation();
-        CellManager manager = new CellManager(this, gridLayout, 6, 5, equation, keyboard);
+        String equation = new EquationGenerator(7).getEquation();
+        CellManager manager = new CellManager(this, gridLayout, 6, 7, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +39,5 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "You lose", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

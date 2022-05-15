@@ -7,12 +7,8 @@ import java.util.HashMap;
 public class EquationSolver {
 
     private boolean isAnswerInt;
-    public String eq;
-
-// TODO add check if valid equation method
 
     public int solve(String str) {
-        eq = str;
         isAnswerInt = true;
         HashMap<Character, Integer> priority = new HashMap<>();
         priority.put('+', 1);

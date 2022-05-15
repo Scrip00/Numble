@@ -9,8 +9,6 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
-
 public class Keyboard extends LinearLayout implements View.OnClickListener {
 
     public Keyboard(Context context) {
