@@ -39,6 +39,7 @@ public class EquationGenerator {
                     addDivision();
                     break;
                 case (4):
+                    addFactorial();
                     break;
                 case (5):
                     break;
@@ -46,6 +47,19 @@ public class EquationGenerator {
                     break;
             }
         }
+    }
+
+    private void addFactorial() {
+        if (getRandomNumber(0, 100) > 10) return;
+        int index = pickRandomNumber();
+        int number = getNumberFromEquation(index);
+        if (number <= 1) return;
+        if (this.equation.charAt(index + calcNumLen(number)) == '!') return;
+        int factorial = getClosestFactorial(number);
+        String equation = this.equation.substring(0, index) + factorial + "!" + this.equation.substring(index + calcNumLen(number));
+        int answer = solver.solve(equation);
+        if (answer > 0 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
+            this.equation = equation.split("=")[0] + "=" + answer;
     }
 
     private void addDivision() {
@@ -210,6 +224,20 @@ public class EquationGenerator {
             n = n / 10;
         }
         return c;
+    }
+
+    private int getClosestFactorial(int n) {
+        int f = 1;
+        int difference = n - f;
+        for (int i = 1; i <= n; i++) {
+            if (difference > n - f * (i + 1)) {
+                return i + 1;
+            }
+            f *= i;
+            difference = n - f;
+            if (difference < 0) difference = -difference;
+        }
+        return 1;
     }
 
     private boolean isNumber(char c) {

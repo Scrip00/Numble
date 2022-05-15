@@ -34,7 +34,11 @@ public class EquationSolver {
             str = solveOneTask(str, getHighestEquationValueIndex(str, priority));
             str = getRidOfMinus(str);
         }
-        return Integer.parseInt(str);
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return (int) Math.sqrt(Integer.MAX_VALUE);
+        }
     }
 
     public int[] getBracketEquation(String str) {
@@ -114,8 +118,10 @@ public class EquationSolver {
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '/':
-                if (getNumberFromString(str, getNumberStartIndex(str, index - 1)) % getNumberFromString(str, index + 1) != 0)
-                    isAnswerInt = false;
+//            System.out.println("BY ZERO " + str + "  " + index);
+                if ((getNumberFromString(str, getNumberStartIndex(str, index - 1)) % getNumberFromString(str, index + 1)) != 0)
+                    ;
+                isAnswerInt = false;
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) / getNumberFromString(str, index + 1);
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
@@ -132,7 +138,9 @@ public class EquationSolver {
     }
 
     private int calcFactorial(int n) {
+        if (n > 10) return (int) Math.sqrt(Integer.MAX_VALUE);
         int result = 1;
+        if (n < 0) n = -n;
         for (int i = 2; i <= n; i++) {
             result *= i;
         }
@@ -148,10 +156,17 @@ public class EquationSolver {
                 number += str.charAt(i);
             } else break;
         }
-        if (testIfNegativeNumber(str, startIndex)) {
-            return -Integer.parseInt(number);
+        int returnValue;
+        try {
+            if (testIfNegativeNumber(str, startIndex)) {
+                returnValue = -Integer.parseInt(number);
+            } else
+                returnValue = Integer.parseInt(number);
+        } catch (NumberFormatException e) {
+            returnValue = (int) Math.sqrt(Integer.MAX_VALUE);
         }
-        return Integer.parseInt(number);
+        return returnValue;
+
     }
 
     public boolean testIfNegativeNumber(String str, int startIndex) {
