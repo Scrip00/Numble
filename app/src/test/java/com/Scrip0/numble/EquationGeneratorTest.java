@@ -71,6 +71,14 @@ public class EquationGeneratorTest {
         assertEquals(true, solver.equationSolved(equation, priority));
         equation = "-242-126";
         assertEquals(true, solver.testIfNegativeNumber(equation, 1));
-        assertEquals(4, solver.getHighestEquationValueIndex(equation, priority));
+        equation = "458";
+        assertEquals(true, solver.equationSolved(equation, priority));
+        equation = "(1+2)*648/18/(1+1)";
+        assertEquals(54, solver.solve(equation));
+        for (int i = 0; i < 100; i++) {
+            EquationGenerator generator = new EquationGenerator(3);
+            equation = generator.getEquation();
+            assertEquals(equation.split("=")[1], String.valueOf(solver.solve(equation)));
+        }
     }
 }

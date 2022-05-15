@@ -1,7 +1,5 @@
 package com.Scrip0.numble;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,11 +26,13 @@ public class EquationSolver {
             String subEquation = str.substring(indexes[0] + 1, indexes[1]);
             while (!equationSolved(subEquation, priority)) {
                 subEquation = solveOneTask(subEquation, getHighestEquationValueIndex(subEquation, priority));
+                subEquation = getRidOfMinus(subEquation);
             }
             str = str.substring(0, indexes[0]) + subEquation + str.substring(indexes[1] + 1);
         }
         while (!equationSolved(str, priority)) {
             str = solveOneTask(str, getHighestEquationValueIndex(str, priority));
+            str = getRidOfMinus(str);
         }
         return Integer.parseInt(str);
     }
@@ -58,11 +58,24 @@ public class EquationSolver {
 
     public boolean equationSolved(String str, HashMap<Character, Integer> values) {
         for (char c : values.keySet()) {
-            if (str.contains(String.valueOf(c)) && str.substring(1).contains(String.valueOf(c))){
+            if (str.contains(String.valueOf(c)) && str.substring(1).contains(String.valueOf(c))) {
                 return false;
             }
         }
         return true;
+    }
+
+    private String getRidOfMinus(String str) {
+        for (int i = 0; i < str.length() - 1; i++) {
+            if (str.charAt(i) == str.charAt(i + 1) && str.charAt(i + 1) == '-') {
+                if (i == 0) {
+                    str = str.substring(2);
+                } else {
+                    str = str.substring(0, i) + "+" + str.substring(i + 2);
+                }
+            }
+        }
+        return str;
     }
 
     public int getHighestEquationValueIndex(String str, HashMap<Character, Integer> values) {
@@ -86,7 +99,13 @@ public class EquationSolver {
                 break;
             case '-':
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) - getNumberFromString(str, index + 1);
-                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                if (testIfNegativeNumber(str, getNumberStartIndex(str, index - 1))) {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1) - 1) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+
+                } else {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+
+                }
                 break;
             case '*':
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) * getNumberFromString(str, index + 1);

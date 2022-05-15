@@ -112,22 +112,21 @@ public class EquationGenerator {
     }
 
     private void addSum() {
-        // TODO add expansion, recalc function, restart
         int choice = getRandomNumber(0, 100);
         if (choice < 10) {
-            String equation = this.equation;
-            String[] sides = equation.split("=");
-            int answer = Integer.parseInt(sides[1]);
-            int random = getRandomNumber(1, 999 - answer);
-            answer += random;
-            int index = pickRandomStandaloneNumber();
+            int index = pickRandomNumber();
             int number = getNumberFromEquation(index);
-            int numLen = calcNumLen(number);
-            Log.d("TEST", String.valueOf(areBracketsNeeded(index, number)));
-            if (number > 999 || areBracketsNeeded(index, number)) return;
-            number += random;
-            equation = sides[0].substring(0, index) + number + sides[0].substring(index + numLen) + "=" + answer;
-            if (equation.length() <= length) this.equation = equation;
+            int random = getRandomNumber(1, 1000 - number);
+            String equation = this.equation.split("=")[0];
+            EquationSolver solver = new EquationSolver();
+            int isNegative = 0;
+            if (solver.testIfNegativeNumber(equation, index)) isNegative = 1;
+            int sum = number + random;
+            if (isNegative == 1) sum = number - random;
+            equation = equation.substring(0, index - isNegative) + sum + equation.substring(index + calcNumLen(number));
+            int answer = solver.solve(equation);
+            if (answer > 0 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
+                this.equation = equation.split("=")[0] + "=" + answer;
         } else {
             if (length - equation.length() < 2) return;
             int index = pickRandomNumber();
@@ -148,13 +147,11 @@ public class EquationGenerator {
 
     private boolean areBracketsNeeded(int index, int number) {
         if (index != 0) {
-            if (equation.charAt(index - 1) == '*' || equation.charAt(index - 1) == '/' || equation.charAt(index - 1) == '^')
+            if (equation.charAt(index - 1) == '*' || equation.charAt(index - 1) == '/' || equation.charAt(index - 1) == '^' || equation.charAt(index - 1) == '-')
                 return true;
         }
         if (index != equation.length() - 1) {
             int numLen = calcNumLen(number);
-            if ((index + numLen) < equation.length())
-                Log.d("TEST", equation.charAt(index + numLen) + " " + index + " " + numLen + " " + equation);
             if ((index + numLen) < equation.length() && (equation.charAt(index + numLen) == '*' || equation.charAt(index + numLen) == '/' || equation.charAt(index + numLen) == '^' || equation.charAt(index + numLen) == '!'))
                 return true;
         }
