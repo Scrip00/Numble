@@ -73,11 +73,13 @@ public class EquationGeneratorTest {
         assertEquals(true, solver.testIfNegativeNumber(equation, 1));
         equation = "458";
         assertEquals(true, solver.equationSolved(equation, priority));
-        equation = "(1+2)*648/18/(1+1)";
-        assertEquals(54, solver.solve(equation));
-        for (int i = 0; i < 100; i++) {
-            EquationGenerator generator = new EquationGenerator(3);
+        equation = "(578-(126+273)-29)/50-48+748-745=42";
+        assertEquals(-42, solver.solve(equation));
+        for (int i = 3; i < 100; i++) {
+            EquationGenerator generator = new EquationGenerator(i);
             equation = generator.getEquation();
+            System.out.println(i);
+            System.out.println(equation);
             assertEquals(equation.split("=")[1], String.valueOf(solver.solve(equation)));
         }
     }

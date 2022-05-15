@@ -95,16 +95,18 @@ public class EquationSolver {
         switch (str.charAt(index)) {
             case '+':
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) + getNumberFromString(str, index + 1);
-                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                if (testIfNegativeNumber(str, getNumberStartIndex(str, index - 1))) {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1) - 1) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                } else {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                }
                 break;
             case '-':
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) - getNumberFromString(str, index + 1);
                 if (testIfNegativeNumber(str, getNumberStartIndex(str, index - 1))) {
                     str = str.substring(0, getNumberStartIndex(str, index - 1) - 1) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
-
                 } else {
                     str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
-
                 }
                 break;
             case '*':

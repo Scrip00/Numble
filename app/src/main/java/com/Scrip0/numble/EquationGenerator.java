@@ -24,7 +24,6 @@ public class EquationGenerator {
 
     private void generateEquation(int length) {
         while (equation.length() != length) {
-            Log.d("TEST", equation);
             int random = getRandomNumber(0, 7);
             switch (random) {
                 case (0):
@@ -52,7 +51,7 @@ public class EquationGenerator {
     private void addDivision() {
         int index = pickRandomNumber();
         int number = getNumberFromEquation(index);
-        if (number == 1) return;
+        if (number <= 1 && number >= -1) return;
         int dividend = pickDivident(number);
         if (dividend == -1) return;
         String equation = this.equation;
@@ -65,7 +64,7 @@ public class EquationGenerator {
     private void addMultiplication() {
         int index = pickRandomNumber();
         int number = getNumberFromEquation(index);
-        if (number == 1) return;
+        if (number <= 1 && number >= -1) return;
         int random = pickRandomDivider(number);
         if (random == -1) return;
         while (random == 1 || random == number) {
@@ -80,35 +79,20 @@ public class EquationGenerator {
 
     private void addSubtraction() {
         int choice = getRandomNumber(0, 100);
-        if (choice < 10) {
-            String equation = this.equation;
-            String[] sides = equation.split("=");
-            int answer = Integer.parseInt(sides[1]);
-            int random = getRandomNumber(1, answer);
-            answer -= random;
-            int index = pickRandomStandaloneNumber();
-            int number = getNumberFromEquation(index);
-            int numLen = calcNumLen(number);
-            number -= random;
-            if (number < 1 || areBracketsNeeded(index, number)) return;
-            equation = sides[0].substring(0, index) + number + sides[0].substring(index + numLen) + "=" + answer;
-            if (equation.length() <= length) this.equation = equation;
+        if (length - equation.length() < 2) return;
+        int index = pickRandomNumber();
+        int number = getNumberFromEquation(index);
+        if (number == 1) return;
+        String equation;
+        equation = this.equation;
+        int random = getRandomNumber(number + 1, 999);
+        if (areBracketsNeeded(index, number) || (index != 0 && equation.charAt(index - 1) == '-')) {
+            equation = equation.substring(0, index) + "(" + random + "-" + (random - number) + ")" + equation.substring(index + calcNumLen(number));
         } else {
-            if (length - equation.length() < 2) return;
-            int index = pickRandomNumber();
-            int number = getNumberFromEquation(index);
-            if (number == 1) return;
-            String equation;
-            equation = this.equation;
-            int random = getRandomNumber(number + 1, 999);
-            if (areBracketsNeeded(index, number) || (index != 0 && equation.charAt(index - 1) == '-')) {
-                equation = equation.substring(0, index) + "(" + random + "-" + (random - number) + ")" + equation.substring(index + calcNumLen(number));
-            } else {
-                equation = equation.substring(0, index) + random + "-" + (random - number) + equation.substring(index + calcNumLen(number));
-            }
-            if (equation.length() <= length)
-                this.equation = equation;
+            equation = equation.substring(0, index) + random + "-" + (random - number) + equation.substring(index + calcNumLen(number));
         }
+        if (equation.length() <= length)
+            this.equation = equation;
     }
 
     private void addSum() {
@@ -125,7 +109,7 @@ public class EquationGenerator {
             if (isNegative == 1) sum = number - random;
             equation = equation.substring(0, index - isNegative) + sum + equation.substring(index + calcNumLen(number));
             int answer = solver.solve(equation);
-            if (answer > 0 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
+            if (answer > -1000 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
                 this.equation = equation.split("=")[0] + "=" + answer;
         } else {
             if (length - equation.length() < 2) return;
