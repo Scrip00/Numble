@@ -117,8 +117,7 @@ public class EquationSolver {
                 break;
             case '/':
                 if ((getNumberFromString(str, getNumberStartIndex(str, index - 1)) % getNumberFromString(str, index + 1)) != 0)
-                    ;
-                isAnswerInt = false;
+                    isAnswerInt = false;
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) / getNumberFromString(str, index + 1);
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;

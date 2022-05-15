@@ -34,9 +34,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!manager.reachedEnd()) {
-                    manager.next();
-                } else
-                    Toast.makeText(getBaseContext(), "You lose", Toast.LENGTH_SHORT).show();
+                    if (manager.next()) {
+                         Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
+                         manager.disableAll();
+                         nextBtn.setOnClickListener(null);
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), equation, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

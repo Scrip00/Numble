@@ -1,6 +1,7 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.Toast;
@@ -112,5 +113,13 @@ public class CellManager {
         if (!solver.isAnswerInt() || equation.split("=").length != 2 || Integer.parseInt(equation.split("=")[1]) != answer)
             return false;
         return true;
+    }
+
+    public void disableAll() {
+        for (Cell[] i: grid) {
+            for (Cell j: i) {
+                j.disableFocus();
+            }
+        }
     }
 }
