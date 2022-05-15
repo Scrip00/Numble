@@ -23,7 +23,13 @@ public class EquationGenerator {
     }
 
     private void generateEquation(int length) {
+        int loopNum = 0;
         while (equation.length() != length) {
+            loopNum++;
+            if (loopNum > 1000 * length) {
+                loopNum = 0;
+                initializeEquation();
+            }
             int random = getRandomNumber(0, 7);
             switch (random) {
                 case (0):
@@ -247,7 +253,7 @@ public class EquationGenerator {
 
     private void initializeEquation() {
         int random = getRandomNumber(1, 10);
-        equation += random + "=" + random;
+        equation = random + "=" + random;
     }
 
     private int getRandomNumber(int min, int max) {
