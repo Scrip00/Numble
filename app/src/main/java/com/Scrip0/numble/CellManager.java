@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -69,6 +70,10 @@ public class CellManager {
     }
 
     public boolean next() {
+        if (!isCurrentEquationCorrect()) {
+            Toast.makeText(context, "INCORRECT", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         boolean won = true;
         for (int i = 0; i < columnCount; i++) {
             Cell temp = grid[currentRow][i];
@@ -92,5 +97,24 @@ public class CellManager {
         }
         currentRow++;
         return won;
+    }
+
+    private boolean isCurrentEquationCorrect() {
+        String equation = "";
+        for (int i = 0; i < columnCount; i++) {
+            String content = grid[currentRow][i].getContent();
+            if (content.isEmpty()) return false;
+            equation += content;
+        }
+        EquationSolver solver = new EquationSolver();
+        int answer;
+        try {
+            answer = solver.solve(equation);
+        } catch (Exception e) {
+            return false;
+        }
+        if (!solver.isAnswerInt() || equation.split("=").length != 2 || Integer.parseInt(equation.split("=")[1]) != answer)
+            return false;
+        return true;
     }
 }
