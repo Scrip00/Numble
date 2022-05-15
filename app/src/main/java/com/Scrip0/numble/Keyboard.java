@@ -40,6 +40,9 @@ public class Keyboard extends LinearLayout implements View.OnClickListener {
     private Button mButtonDivide;
     private Button mButtonEquals;
     private Button mButtonFactorial;
+    private Button mButtonPower;
+    private Button mButtonLeftBracket;
+    private Button mButtonRightBracket;
 
     SparseArray<String> keyValues = new SparseArray<>();
 
@@ -64,6 +67,9 @@ public class Keyboard extends LinearLayout implements View.OnClickListener {
         mButtonDivide = findViewById(R.id.button_divide);
         mButtonEquals = findViewById(R.id.button_equals);
         mButtonFactorial = findViewById(R.id.button_factorial);
+        mButtonPower = findViewById(R.id.button_power);
+        mButtonLeftBracket = findViewById(R.id.button_left_bracket);
+        mButtonRightBracket = findViewById(R.id.button_right_bracket);
 
         mButton1.setOnClickListener(this);
         mButton2.setOnClickListener(this);
@@ -81,6 +87,9 @@ public class Keyboard extends LinearLayout implements View.OnClickListener {
         mButtonDivide.setOnClickListener(this);
         mButtonEquals.setOnClickListener(this);
         mButtonFactorial.setOnClickListener(this);
+        mButtonPower.setOnClickListener(this);
+        mButtonLeftBracket.setOnClickListener(this);
+        mButtonRightBracket.setOnClickListener(this);
 
         keyValues.put(R.id.button_1, "1");
         keyValues.put(R.id.button_2, "2");
@@ -98,6 +107,9 @@ public class Keyboard extends LinearLayout implements View.OnClickListener {
         keyValues.put(R.id.button_divide, "/");
         keyValues.put(R.id.button_equals, "=");
         keyValues.put(R.id.button_factorial, "!");
+        keyValues.put(R.id.button_power, "^");
+        keyValues.put(R.id.button_left_bracket, "(");
+        keyValues.put(R.id.button_right_bracket, ")");
     }
 
     @Override

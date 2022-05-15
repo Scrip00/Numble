@@ -114,18 +114,39 @@
             android:layout_weight="1"
             android:text="/" />
 
+            <Button
+            android:id="@+id/button_factorial"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="!" />
+
+            <Button
+            android:id="@+id/button_power"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="^" />
+
+            <Button
+            android:id="@+id/button_left_bracket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="(" />
+
+            <Button
+            android:id="@+id/button_right_bracket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=")" />
+
         <Button
             android:id="@+id/button_equals"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="=" />
-
-        <Button
-            android:id="@+id/button_factorial"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="!" />
     </LinearLayout>
 </LinearLayout>
