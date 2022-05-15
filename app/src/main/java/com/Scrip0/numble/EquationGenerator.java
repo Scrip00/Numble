@@ -2,6 +2,7 @@ package com.Scrip0.numble;
 
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -48,11 +49,27 @@ public class EquationGenerator {
                     addFactorial();
                     break;
                 case (5):
+                    addPower();
                     break;
                 case (6):
                     break;
             }
         }
+    }
+
+    private void addPower() {
+        if (getRandomNumber(0, 100) > 10) return;
+        int index = pickRandomNumber();
+        int number = getNumberFromEquation(index);
+        if (number <= 1) return;
+        if (this.equation.charAt(index + calcNumLen(number)) == '!' || index == 1 && this.equation.charAt(0) == '-')
+            return;
+        int[] power = getClosestPower(number);
+        if (power[0] == 1) return;
+        String equation = this.equation.substring(0, index) + power[0] + "^" + power[1] + this.equation.substring(index + calcNumLen(number));
+        int answer = solver.solve(equation);
+        if (answer > 0 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
+            this.equation = equation.split("=")[0] + "=" + answer;
     }
 
     private void addFactorial() {
@@ -244,6 +261,20 @@ public class EquationGenerator {
         return 0;
     }
 
+    private int[] getClosestPower(int n) {
+        ArrayList<int[]> powers = new ArrayList<>();
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            for (int j = 1; j <= Math.sqrt(n) * 2; j++) {
+                if (Math.pow(i, j) - n > (float) n * 0.1 && j - 1 != 1) {
+                    powers.add(new int[]{i, j - 1});
+                    break;
+                }
+            }
+        }
+        if (powers.size() == 0) return new int[]{-1, -1};
+        return powers.get(getRandomNumber(0, powers.size() - 1));
+    }
+
     private boolean isNumber(char c) {
         ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
         return numbers.contains(c);
@@ -259,7 +290,6 @@ public class EquationGenerator {
     }
 
     public void generateNewEquation(int length) {
-        equation = "";
         initializeEquation();
         generateEquation(length);
     }

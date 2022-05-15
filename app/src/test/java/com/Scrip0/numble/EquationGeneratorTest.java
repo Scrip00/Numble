@@ -75,9 +75,9 @@ public class EquationGeneratorTest {
         assertEquals(true, solver.equationSolved(equation, priority));
         equation = "(578-(126+273)-29)/50-48+748-745=42";
         assertEquals(-42, solver.solve(equation));
-        equation = "1!=1";
-        assertEquals(1, solver.solve(equation));
-        for (int i = 3; i < 60; i++) {
+        equation = "937-7^0!*6+1=896";
+        assertEquals(896, solver.solve(equation));
+        for (int i = 3; i < 100; i++) {
             for (int j = 0; j < 10; j++) {
                 EquationGenerator generator = new EquationGenerator(i);
                 equation = generator.getEquation();

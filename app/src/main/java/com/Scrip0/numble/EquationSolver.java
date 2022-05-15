@@ -7,10 +7,12 @@ import java.util.HashMap;
 public class EquationSolver {
 
     private boolean isAnswerInt;
+    public String eq;
 
 // TODO add check if valid equation method
 
     public int solve(String str) {
+        eq = str;
         isAnswerInt = true;
         HashMap<Character, Integer> priority = new HashMap<>();
         priority.put('+', 1);
@@ -118,7 +120,6 @@ public class EquationSolver {
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '/':
-//            System.out.println("BY ZERO " + str + "  " + index);
                 if ((getNumberFromString(str, getNumberStartIndex(str, index - 1)) % getNumberFromString(str, index + 1)) != 0)
                     ;
                 isAnswerInt = false;
@@ -127,6 +128,7 @@ public class EquationSolver {
                 break;
             case '^':
                 result = (int) Math.pow(getNumberFromString(str, getNumberStartIndex(str, index - 1)), getNumberFromString(str, index + 1));
+                if (result == 0) result = (int) Math.sqrt(Integer.MAX_VALUE);
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '!':
@@ -163,10 +165,10 @@ public class EquationSolver {
             } else
                 returnValue = Integer.parseInt(number);
         } catch (NumberFormatException e) {
+            System.out.println("WTF");
             returnValue = (int) Math.sqrt(Integer.MAX_VALUE);
         }
         return returnValue;
-
     }
 
     public boolean testIfNegativeNumber(String str, int startIndex) {
