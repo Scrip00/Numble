@@ -195,21 +195,20 @@ public class EquationGenerator {
         }
         return Integer.parseInt(number);
     }
-
-    private int pickRandomStandaloneNumber() {
-        // TODO чекать скобки, * / ^ делать отдельно в методах
-        ArrayList<Integer> numbers = new ArrayList<>();
-        if (isNumber(equation.charAt(0))) numbers.add(0);
-        int brackets = 0;
-        for (int i = 1; i < equation.length(); i++) {
-            if (equation.charAt(i) == ')') brackets--;
-            if (equation.charAt(i) == '(') brackets++;
-            if (isNumber(equation.charAt(i)) && !isNumber(equation.charAt(i - 1)) && brackets == 0 && !areBracketsNeeded(i, getNumberFromEquation(i))) { // 1+(252*1-61)*403=594
-                numbers.add(i);
-            }
-        }
-        return numbers.get(getRandomNumber(0, numbers.size() - 1));
-    }
+//
+//    private int pickRandomStandaloneNumber() {
+//        ArrayList<Integer> numbers = new ArrayList<>();
+//        if (isNumber(equation.charAt(0))) numbers.add(0);
+//        int brackets = 0;
+//        for (int i = 1; i < equation.length(); i++) {
+//            if (equation.charAt(i) == ')') brackets--;
+//            if (equation.charAt(i) == '(') brackets++;
+//            if (isNumber(equation.charAt(i)) && !isNumber(equation.charAt(i - 1)) && brackets == 0 && !areBracketsNeeded(i, getNumberFromEquation(i))) { // 1+(252*1-61)*403=594
+//                numbers.add(i);
+//            }
+//        }
+//        return numbers.get(getRandomNumber(0, numbers.size() - 1));
+//    }
 
     private int pickDivident(int number) {
         ArrayList<Integer> dividents = new ArrayList<>();
@@ -234,16 +233,15 @@ public class EquationGenerator {
 
     private int getClosestFactorial(int n) {
         int f = 1;
-        int difference = n - f;
+        int difference;
         for (int i = 1; i <= n; i++) {
-            if (difference > n - f * (i + 1)) {
-                return i + 1;
-            }
             f *= i;
             difference = n - f;
-            if (difference < 0) difference = -difference;
+            if (difference < 0) {
+                return i;
+            }
         }
-        return 1;
+        return 0;
     }
 
     private boolean isNumber(char c) {
