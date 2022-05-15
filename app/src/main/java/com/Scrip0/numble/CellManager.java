@@ -8,6 +8,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.GridLayout;
 
+import androidx.core.content.ContextCompat;
+
 public class CellManager {
     private final Context context;
     private final GridLayout gridLayout;
@@ -73,12 +75,15 @@ public class CellManager {
             temp.disableFocus();
             if (equation.charAt(i) == temp.getContent().charAt(0)) {
                 temp.setBackground(Cell.RIGHT);
+                keyboard.updateKeyColor(temp.getContent(), ContextCompat.getColor(context, R.color.cell_right));
             } else if (equation.contains(temp.getContent())) {
                 won = false;
                 temp.setBackground(Cell.CLOSE);
+                keyboard.updateKeyColor(temp.getContent(), ContextCompat.getColor(context, R.color.cell_close));
             } else {
                 won = false;
                 temp.setBackground(Cell.WRONG);
+                keyboard.updateKeyColor(temp.getContent(), ContextCompat.getColor(context, R.color.cell_wrong));
             }
             if (hasNext()) {
                 temp = grid[currentRow + 1][i];

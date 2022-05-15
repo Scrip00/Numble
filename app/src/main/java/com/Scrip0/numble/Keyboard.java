@@ -9,6 +9,8 @@ import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
 public class Keyboard extends LinearLayout implements View.OnClickListener {
 
     public Keyboard(Context context) {
@@ -118,6 +120,68 @@ public class Keyboard extends LinearLayout implements View.OnClickListener {
 
         String value = keyValues.get(v.getId());
         inputConnection.commitText(value, 1);
+    }
+
+    public void updateKeyColor(String key, int color) {
+        switch (key) {
+            case "0":
+                mButton0.setBackgroundColor(color);
+                break;
+            case "1":
+                mButton1.setBackgroundColor(color);
+                break;
+            case "2":
+                mButton2.setBackgroundColor(color);
+                break;
+            case "3":
+                mButton3.setBackgroundColor(color);
+                break;
+            case "4":
+                mButton4.setBackgroundColor(color);
+                break;
+            case "5":
+                mButton5.setBackgroundColor(color);
+                break;
+            case "6":
+                mButton6.setBackgroundColor(color);
+                break;
+            case "7":
+                mButton7.setBackgroundColor(color);
+                break;
+            case "8":
+                mButton8.setBackgroundColor(color);
+                break;
+            case "9":
+                mButton9.setBackgroundColor(color);
+                break;
+            case "+":
+                mButtonPlus.setBackgroundColor(color);
+                break;
+            case "-":
+                mButtonMinus.setBackgroundColor(color);
+                break;
+            case "*":
+                mButtonMultiply.setBackgroundColor(color);
+                break;
+            case "/":
+                mButtonDivide.setBackgroundColor(color);
+                break;
+            case "!":
+                mButtonFactorial.setBackgroundColor(color);
+                break;
+            case "^":
+                mButtonPower.setBackgroundColor(color);
+                break;
+            case "(":
+                mButtonLeftBracket.setBackgroundColor(color);
+                break;
+            case ")":
+                mButtonRightBracket.setBackgroundColor(color);
+                break;
+            case "=":
+                mButtonEquals.setBackgroundColor(color);
+                break;
+        }
     }
 
     public void setInputConnection(InputConnection ic) {
