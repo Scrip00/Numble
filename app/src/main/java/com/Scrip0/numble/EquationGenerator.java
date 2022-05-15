@@ -58,31 +58,27 @@ public class EquationGenerator {
         String equation = this.equation;
         equation = equation.substring(0, index) + dividend + "/" + number + equation.substring(index + calcNumLen(number));
         int answer = solver.solve(equation);
-        if (answer > 0 && answer < 1000 && this.equation.split("=")[0].length() <= length && solver.isAnswerInt())
+        if (answer > 0 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
             this.equation = equation.split("=")[0] + "=" + answer;
     }
 
-    private void addMultiplication() { // 4*2=8
-        // TODO change add f-n
-        if (length - equation.length() < 2) return;
+    private void addMultiplication() {
         int index = pickRandomNumber();
         int number = getNumberFromEquation(index);
-        if (number < 2) return;
-        String equation;
-        int random;
-        equation = this.equation;
-        random = pickRandomDivider(number);
+        if (number == 1) return;
+        int random = pickRandomDivider(number);
         if (random == -1) return;
         while (random == 1 || random == number) {
             random = pickRandomDivider(number);
         }
+        String equation = this.equation;
         equation = equation.substring(0, index) + number / random + "*" + random + equation.substring(index + calcNumLen(number));
-        if (equation.length() <= length)
-            this.equation = equation;
+        int answer = solver.solve(equation);
+        if (answer > 0 && answer < 1000 && equation.split("=")[0].length() + 1 + String.valueOf(answer).length() <= length && solver.isAnswerInt())
+            this.equation = equation.split("=")[0] + "=" + answer;
     }
 
     private void addSubtraction() {
-        // TODO add expansion, recalc function, restart
         int choice = getRandomNumber(0, 100);
         if (choice < 10) {
             String equation = this.equation;

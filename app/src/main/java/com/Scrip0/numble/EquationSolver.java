@@ -1,5 +1,7 @@
 package com.Scrip0.numble;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,9 +56,11 @@ public class EquationSolver {
         return indexes;
     }
 
-    private boolean equationSolved(String str, HashMap<Character, Integer> values) {
+    public boolean equationSolved(String str, HashMap<Character, Integer> values) {
         for (char c : values.keySet()) {
-            if (str.contains(String.valueOf(c))) return false;
+            if (str.contains(String.valueOf(c)) && str.substring(1).contains(String.valueOf(c))){
+                return false;
+            }
         }
         return true;
     }
@@ -65,7 +69,7 @@ public class EquationSolver {
         int index = 0;
         int maxIndex = -1;
         for (int i = 0; i < str.length(); i++) {
-            if (values.containsKey(str.charAt(i)) && values.get(str.charAt(i)) > maxIndex) {
+            if (values.containsKey(str.charAt(i)) && values.get(str.charAt(i)) > maxIndex && !testIfNegativeNumber(str, i + 1)) {
                 index = i;
                 maxIndex = values.get(str.charAt(i));
             }
@@ -117,12 +121,24 @@ public class EquationSolver {
     private int getNumberFromString(String str, int startIndex) {
         String number = "";
         ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        if (!numbers.contains(str.charAt(startIndex))) startIndex++;
         for (int i = startIndex; i <= str.length() - 1; i++) {
             if (numbers.contains(str.charAt(i))) {
                 number += str.charAt(i);
             } else break;
         }
+        if (testIfNegativeNumber(str, startIndex)) {
+            return -Integer.parseInt(number);
+        }
         return Integer.parseInt(number);
+    }
+
+    public boolean testIfNegativeNumber(String str, int startIndex) {
+        ArrayList<Character> numbers = new ArrayList<>(Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'));
+        if (startIndex - 1 >= 0 && str.charAt(startIndex - 1) == '-' && (startIndex - 2 < 0 || !numbers.contains(str.charAt(startIndex - 2)))) {
+            return true;
+        }
+        return false;
     }
 
     private int getNumberStartIndex(String str, int index) {

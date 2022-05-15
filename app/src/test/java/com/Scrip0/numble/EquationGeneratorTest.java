@@ -56,4 +56,21 @@ public class EquationGeneratorTest {
         String equation = "2+3*(3!/(7-5))+4*(2^3!)/4";
         assertEquals(75, solver.solve(equation));
     }
+
+    @Test
+    public void testNegative() {
+        EquationSolver solver = new EquationSolver();
+        String equation = "-11";
+        HashMap<Character, Integer> priority = new HashMap<>();
+        priority.put('+', 1);
+        priority.put('-', 1);
+        priority.put('*', 2);
+        priority.put('/', 2);
+        priority.put('^', 3);
+        priority.put('!', 4);
+        assertEquals(true, solver.equationSolved(equation, priority));
+        equation = "-242-126";
+        assertEquals(true, solver.testIfNegativeNumber(equation, 1));
+        assertEquals(4, solver.getHighestEquationValueIndex(equation, priority));
+    }
 }
