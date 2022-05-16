@@ -14,7 +14,7 @@ public class StartSplashScreen extends Activity {
         int secondsDelayed = 1;
         new Handler().postDelayed(new Runnable() {
                 public void run() {
-                        startActivity(new Intent(StartSplashScreen.this, MainActivity.class));
+                        startActivity(new Intent(StartSplashScreen.this, MainMenu.class));
                         overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         finish();
                 }

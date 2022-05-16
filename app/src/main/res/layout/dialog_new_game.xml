@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <SeekBar
+                android:id="@+id/seekBarLength"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textViewSeekbarLength"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textSize="26sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <SeekBar
+                android:id="@+id/seekBarNumtries"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textViewSeekbarNumtries"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textSize="26sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
