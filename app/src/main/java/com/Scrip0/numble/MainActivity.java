@@ -27,17 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
         Keyboard keyboard = findViewById(R.id.keyboard);
 
-        String equation = new EquationGenerator(7).getEquation();
-        CellManager manager = new CellManager(this, gridLayout, 6, 7, equation, keyboard);
+        String equation = new EquationGenerator(5).getEquation();
+        CellManager manager = new CellManager(this, gridLayout, 6, 5, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!manager.reachedEnd()) {
                     if (manager.next()) {
-                         Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
-                         manager.disableAll();
-                         nextBtn.setOnClickListener(null);
+                        Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
+                        manager.disableAll();
+                        nextBtn.setOnClickListener(null);
                     }
                 } else {
                     Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();

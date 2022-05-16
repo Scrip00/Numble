@@ -1,8 +1,11 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.Toast;
 
@@ -72,28 +75,56 @@ public class CellManager {
             return false;
         }
         boolean won = true;
+
         for (int i = 0; i < columnCount; i++) {
             Cell temp = grid[currentRow][i];
             temp.disableFocus();
             if (equation.charAt(i) == temp.getContent().charAt(0)) {
-                temp.setBackground(Cell.RIGHT);
+                startCellAnim(temp.getView(), temp, Cell.RIGHT, i);
                 keyboard.updateKeyColor(temp.getContent(), ContextCompat.getColor(context, R.color.cell_right));
             } else if (equation.contains(temp.getContent())) {
                 won = false;
-                temp.setBackground(Cell.CLOSE);
+                startCellAnim(temp.getView(), temp, Cell.CLOSE, i);
                 keyboard.updateKeyColor(temp.getContent(), ContextCompat.getColor(context, R.color.cell_close));
             } else {
                 won = false;
-                temp.setBackground(Cell.WRONG);
+                startCellAnim(temp.getView(), temp, Cell.WRONG, i);
                 keyboard.updateKeyColor(temp.getContent(), ContextCompat.getColor(context, R.color.cell_wrong));
             }
             if (hasNext()) {
                 temp = grid[currentRow + 1][i];
                 temp.enableFocus();
             }
+
         }
         currentRow++;
         return won;
+    }
+
+    private void startCellAnim(final View view, Cell cell, int color, int delay) {
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.scale_in);
+        animation.setStartOffset(delay * 100L);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                cell.setBackground(color);
+                Animation scaleOutAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_out);
+                scaleOutAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+                view.startAnimation(scaleOutAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(animation);
     }
 
     private boolean isCurrentEquationCorrect() {
@@ -116,8 +147,8 @@ public class CellManager {
     }
 
     public void disableAll() {
-        for (Cell[] i: grid) {
-            for (Cell j: i) {
+        for (Cell[] i : grid) {
+            for (Cell j : i) {
                 j.disableFocus();
             }
         }

@@ -113,6 +113,10 @@ public class Cell extends FrameLayout {
         return textField;
     }
 
+    public View getView() {
+        return this;
+    }
+
     public void setSize(int width, int height) {
         ViewGroup.LayoutParams params = layout.getLayoutParams();
         params.width = width;
