@@ -1,7 +1,6 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
