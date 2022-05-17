@@ -23,7 +23,7 @@
                     android:valueFrom="M 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82 L 90.07 74.82"
                     android:valueTo="M 90.07 74.82 L 112.54 130.93 L 165.06 0 L 172.56 18.71 L 172.56 18.71 L 112.54 168.34 L 60.02 37.41 L 7.5 168.34 L 0 149.64 L 60.02 0 L 90.07 74.82"
                     android:valueType="pathType"
-                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
                 <objectAnimator
                     android:propertyName="fillAlpha"
                     android:duration="800"
