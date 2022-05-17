@@ -9,12 +9,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             getWindow()
@@ -27,8 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
         Keyboard keyboard = findViewById(R.id.keyboard);
 
-        String equation = new EquationGenerator(5).getEquation();
-        CellManager manager = new CellManager(this, gridLayout, 6, 5, equation, keyboard);
+        int equationLength = getIntent().getIntExtra("Length", 3);
+        int numtries = getIntent().getIntExtra("Numtries", 3);
+        boolean withMult = getIntent().getBooleanExtra("With_mult", true);
+        boolean withPower = getIntent().getBooleanExtra("With_power", true);
+        boolean withFact = getIntent().getBooleanExtra("With_fact", true);
+
+        String equation = new EquationGenerator(equationLength, withMult, withPower, withFact).getEquation();
+        CellManager manager = new CellManager(this, gridLayout, numtries, equationLength, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

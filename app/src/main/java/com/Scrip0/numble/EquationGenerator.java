@@ -20,6 +20,52 @@ public class EquationGenerator {
         generateEquation(length);
     }
 
+    public EquationGenerator(int length, boolean withMult, boolean withPower, boolean withFact) {
+        if (length < 3)
+            throw new IllegalArgumentException();
+        this.length = length;
+        solver = new EquationSolver();
+        equation = "";
+        initializeEquation();
+        generateEquationWithRestrictions(length, withMult, withPower, withFact);
+    }
+
+    private void generateEquationWithRestrictions(int length, boolean withMult, boolean withPower, boolean withFact) {
+        int loopNum = 0;
+        while (equation.length() != length) {
+            loopNum++;
+            if (loopNum > 5000 * length) {
+                loopNum = 0;
+                initializeEquation();
+            }
+            int random = getRandomNumber(0, 6);
+            switch (random) {
+                case (0):
+                    addSum();
+                    break;
+                case (1):
+                    addSubtraction();
+                    break;
+                case (2):
+                    if (withMult)
+                        addMultiplication();
+                    break;
+                case (3):
+                    if (withMult)
+                        addDivision();
+                    break;
+                case (4):
+                    if (withFact)
+                        addFactorial();
+                    break;
+                case (5):
+                    if (withPower)
+                        addPower();
+                    break;
+            }
+        }
+    }
+
     private void generateEquation(int length) {
         int loopNum = 0;
         while (equation.length() != length) {
@@ -28,7 +74,7 @@ public class EquationGenerator {
                 loopNum = 0;
                 initializeEquation();
             }
-            int random = getRandomNumber(0, 7);
+            int random = getRandomNumber(0, 6);
             switch (random) {
                 case (0):
                     addSum();
@@ -47,8 +93,6 @@ public class EquationGenerator {
                     break;
                 case (5):
                     addPower();
-                    break;
-                case (6):
                     break;
             }
         }
