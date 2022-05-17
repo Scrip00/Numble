@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="cell_default">#ffffff</color>
-    <color name="cell_wrong">#ff4242</color>
-    <color name="cell_right">#30ff94</color>
-    <color name="cell_close">#ffa53d</color>
+    <color name="cell_wrong">#F427AB</color>
+    <color name="cell_right">#1FCC1F</color>
+    <color name="cell_close">#F98B12</color>
 </resources>

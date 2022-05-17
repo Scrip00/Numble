@@ -3,6 +3,7 @@ package com.Scrip0.numble;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ public class StartNewGameDialog extends DialogFragment {
                 .setPositiveButton("Start", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Objects.requireNonNull(StartNewGameDialog.this.getDialog()).cancel();
+                        startActivity(new Intent(getActivity(), MainActivity.class));
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -52,8 +53,7 @@ public class StartNewGameDialog extends DialogFragment {
                     }
 
                     @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress,
-                                                  boolean fromUser) {
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         double value = min + (progress * step);
                         textView.setText(String.valueOf((int) value));
                     }
