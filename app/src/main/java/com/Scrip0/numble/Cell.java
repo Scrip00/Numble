@@ -52,13 +52,13 @@ public class Cell extends FrameLayout {
                     InputConnection ic = textField.onCreateInputConnection(new EditorInfo());
                     keyboard.setInputConnection(ic);
                 }
-                if (b && textField.getText().length() == 1) {
+                if (b && textField.getText().length() > 0) {
                     prevContent = String.valueOf(textField.getText());
                     restoredText = false;
                     textField.setText("");
                 }
 
-                if (!b && textField.getText().length() == 0) {
+                if (!b && textField.getText().length() < 1) {
                     restoredText = true;
                     textField.setText(prevContent);
                 }
@@ -79,7 +79,7 @@ public class Cell extends FrameLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (textField.getText().length() == 1 && !restoredText) {
+                if (textField.getText().length() > 0 && !restoredText) {
                     textField.clearFocus();
                     if (next != null) {
                         next.setFocus();
