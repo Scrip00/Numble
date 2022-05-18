@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,11 @@ public class GameActivity extends AppCompatActivity {
         GridLayout gridLayout = findViewById(R.id.grid_layout);
 
         Keyboard keyboard = findViewById(R.id.keyboard);
+        LoadingAnimator loadingAnimator = findViewById(R.id.loadingAnimator);
+        loadingAnimator.cancelAnimation();
+
+        RelativeLayout gameLayout = findViewById(R.id.gameLayout);
+        gameLayout.setVisibility(View.INVISIBLE);
 
         int equationLength = getIntent().getIntExtra("Length", 3);
         int numtries = getIntent().getIntExtra("Numtries", 3);
@@ -34,7 +40,8 @@ public class GameActivity extends AppCompatActivity {
         boolean withFact = getIntent().getBooleanExtra("With_fact", true);
 
         String equation = new EquationGenerator(equationLength, withMult, withPower, withFact).getEquation();
-        CellManager manager = new CellManager(this, gridLayout, numtries, equationLength, equation, keyboard);
+
+        CellManager manager = new CellManager(getBaseContext(), gridLayout, gameLayout, loadingAnimator, numtries, equationLength, equation, keyboard);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

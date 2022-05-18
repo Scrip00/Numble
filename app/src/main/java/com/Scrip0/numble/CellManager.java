@@ -1,11 +1,13 @@
 package com.Scrip0.numble;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -19,14 +21,18 @@ public class CellManager {
     private final int columnCount;
     private final String equation;
     private final Keyboard keyboard;
+    private final RelativeLayout gameLayout;
+    private final LoadingAnimator loadingAnimator;
 
-    public CellManager(Context context, GridLayout gridLayout, int rowCount, int columnCount, String equation, Keyboard keyboard) {
+    public CellManager(Context context, GridLayout gridLayout, RelativeLayout gameLayout, LoadingAnimator loadingAnimator, int rowCount, int columnCount, String equation, Keyboard keyboard) {
         this.context = context;
         this.gridLayout = gridLayout;
         this.rowCount = rowCount;
         this.columnCount = columnCount;
         this.equation = equation;
         this.keyboard = keyboard;
+        this.gameLayout = gameLayout;
+        this.loadingAnimator = loadingAnimator;
         grid = new Cell[rowCount][columnCount];
         gridLayout.setRowCount(rowCount);
         gridLayout.setColumnCount(columnCount);
@@ -39,21 +45,48 @@ public class CellManager {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
                 int width = calculateCellWidth();
-                for (int k = 0; k < rowCount; k++) {
-                    for (int j = 0; j < columnCount; j++) {
-                        Cell temp = new Cell(context, keyboard);
-                        temp.setSize(width, width);
-                        GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
-                        temp.setLayoutParams(param);
-                        if (k != 0) temp.disableFocus();
-                        if (j != 0) grid[k][j - 1].setNext(temp);
-                        grid[k][j] = temp;
-                        gridLayout.addView(temp);
-                    }
-                }
+                LoadCellsTask task = new LoadCellsTask();
+                task.execute(width);
                 gridLayout.removeOnLayoutChangeListener(this);
             }
         });
+    }
+
+    private final class LoadCellsTask extends AsyncTask<Integer, Void, Void> {
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            for (int k = 0; k < rowCount; k++) {
+                for (int j = 0; j < columnCount; j++) {
+                    Cell temp = new Cell(context, keyboard);
+                    temp.setSize(integers[0], integers[0]);
+                    GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
+                    temp.setLayoutParams(param);
+                    if (k != 0) temp.disableFocus();
+                    if (j != 0) grid[k][j - 1].setNext(temp);
+                    grid[k][j] = temp;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            for (int k = 0; k < rowCount; k++) {
+                for (int j = 0; j < columnCount; j++) {
+                    gridLayout.addView(grid[k][j]);
+                }
+            }
+            loadingAnimator.setVisibility(View.INVISIBLE);
+            gameLayout.setVisibility(View.VISIBLE);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+            fadeOutAnimation.setDuration(1000);
+            fadeOutAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            gameLayout.setAnimation(fadeOutAnimation);
+            Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+            fadeInAnimation.setDuration(1000);
+            fadeInAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            loadingAnimator.setAnimation(fadeInAnimation);
+        }
     }
 
     public int calculateCellWidth() {
