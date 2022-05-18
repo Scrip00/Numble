@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.SeekBar;
@@ -36,6 +38,16 @@ public class StartNewGameDialog extends DialogFragment {
                         Switch withMult = dialogView.findViewById(R.id.switchMult);
                         Switch withPower = dialogView.findViewById(R.id.switchPower);
                         Switch withFact = dialogView.findViewById(R.id.switchFact);
+
+                        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
+                        sharedPrefsEditor.putBoolean("With_mult", withMult.isChecked());
+                        sharedPrefsEditor.putBoolean("With_power", withPower.isChecked());
+                        sharedPrefsEditor.putBoolean("With_fact", withFact.isChecked());
+                        sharedPrefsEditor.putInt("Length", Integer.parseInt(String.valueOf(textViewSeekbarLength.getText())) - 3);
+                        sharedPrefsEditor.putInt("Numtries", Integer.parseInt(String.valueOf(textViewSeekbarNumtries.getText())) - 1);
+                        sharedPrefsEditor.apply();
+
                         gameIntent.putExtra("With_mult", withMult.isChecked());
                         gameIntent.putExtra("With_power", withPower.isChecked());
                         gameIntent.putExtra("With_fact", withFact.isChecked());
@@ -47,8 +59,7 @@ public class StartNewGameDialog extends DialogFragment {
                         Objects.requireNonNull(StartNewGameDialog.this.getDialog()).cancel();
                     }
                 });
-        initializeSeekBar(dialogView.findViewById(R.id.seekBarLength), dialogView.findViewById(R.id.textViewSeekbarLength), 3, 60, 4);
-        initializeSeekBar(dialogView.findViewById(R.id.seekBarNumtries), dialogView.findViewById(R.id.textViewSeekbarNumtries), 1, 50, 6);
+        initDialog(dialogView);
         return builder.create();
     }
 
@@ -77,4 +88,21 @@ public class StartNewGameDialog extends DialogFragment {
         seekBar.setProgress(initialProgress);
     }
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private void initDialog(View dialogView) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int length = sharedPrefs.getInt("Length", 4);
+        int numTries = sharedPrefs.getInt("Numtries", 6);
+        boolean withMult = sharedPrefs.getBoolean("With_mult", false);
+        boolean withPower = sharedPrefs.getBoolean("With_power", true);
+        boolean withFact = sharedPrefs.getBoolean("With_fact", true);
+        Switch withMultSwitch = dialogView.findViewById(R.id.switchMult);
+        withMultSwitch.setChecked(withMult);
+        Switch withPowerSwitch = dialogView.findViewById(R.id.switchPower);
+        withPowerSwitch.setChecked(withPower);
+        Switch withFactSwitch = dialogView.findViewById(R.id.switchFact);
+        withFactSwitch.setChecked(withFact);
+        initializeSeekBar(dialogView.findViewById(R.id.seekBarLength), dialogView.findViewById(R.id.textViewSeekbarLength), 3, 60, length);
+        initializeSeekBar(dialogView.findViewById(R.id.seekBarNumtries), dialogView.findViewById(R.id.textViewSeekbarNumtries), 1, 50, numTries);
+    }
 }

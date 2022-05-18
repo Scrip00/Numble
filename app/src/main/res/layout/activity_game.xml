@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-    <com.Scrip0.numble.LoadingAnimator
-        android:id="@+id/loadingAnimator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <RelativeLayout
         android:id="@+id/gameLayout"
         android:layout_width="match_parent"
@@ -40,5 +35,10 @@
             android:layout_marginBottom="10dp"
             android:text="Next" />
     </RelativeLayout>
+
+    <com.Scrip0.numble.LoadingAnimator
+        android:id="@+id/loadingAnimator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
