@@ -1,4 +1,4 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.Animations;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
+
+import com.Scrip0.numble.MainMenu;
+import com.Scrip0.numble.R;
 
 public class StartSplashScreen extends Activity {
     @Override

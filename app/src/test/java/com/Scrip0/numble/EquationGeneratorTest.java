@@ -2,6 +2,9 @@ package com.Scrip0.numble;
 
 import static org.junit.Assert.assertEquals;
 
+import com.Scrip0.numble.EquationManagers.EquationGenerator;
+import com.Scrip0.numble.EquationManagers.EquationSolver;
+
 import org.junit.Test;
 
 import java.util.HashMap;

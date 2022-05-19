@@ -5,8 +5,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.Scrip0.numble.Cell;
-
 @Entity(tableName = "user")
 public class HistoryModel {
 

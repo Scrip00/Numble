@@ -1,4 +1,4 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.Dialogs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,6 +15,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
+
+import com.Scrip0.numble.GameActivity;
+import com.Scrip0.numble.R;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.CustomLayouts;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.inputmethod.InputConnection;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.Scrip0.numble.R;
 
 public class Keyboard extends LinearLayout implements View.OnClickListener {
 

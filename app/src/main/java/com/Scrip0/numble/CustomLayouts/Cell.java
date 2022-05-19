@@ -1,4 +1,4 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.CustomLayouts;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+
+import com.Scrip0.numble.R;
 
 public class Cell extends FrameLayout {
 

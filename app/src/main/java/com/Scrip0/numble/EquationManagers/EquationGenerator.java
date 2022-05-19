@@ -1,4 +1,4 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.EquationManagers;
 
 import java.util.ArrayList;
 import java.util.Arrays;

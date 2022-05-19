@@ -1,7 +1,6 @@
 package com.Scrip0.numble;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -10,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
+import com.Scrip0.numble.Dialogs.ContinueSavedGameDialog;
+import com.Scrip0.numble.Dialogs.StartNewGameDialog;
 
 public class MainMenu extends AppCompatActivity {
 

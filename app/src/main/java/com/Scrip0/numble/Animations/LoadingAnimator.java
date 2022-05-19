@@ -1,4 +1,4 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.Animations;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+
+import com.Scrip0.numble.R;
 
 import java.util.ArrayList;
 import java.util.Timer;

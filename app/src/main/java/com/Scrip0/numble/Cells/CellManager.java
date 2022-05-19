@@ -1,9 +1,7 @@
-package com.Scrip0.numble;
+package com.Scrip0.numble.Cells;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
@@ -13,6 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+
+import com.Scrip0.numble.CustomLayouts.Cell;
+import com.Scrip0.numble.EquationManagers.EquationSolver;
+import com.Scrip0.numble.CustomLayouts.Keyboard;
+import com.Scrip0.numble.Animations.LoadingAnimator;
+import com.Scrip0.numble.R;
 
 public class CellManager {
     private final Context context;
