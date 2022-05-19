@@ -2,6 +2,8 @@ package com.Scrip0.numble;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
@@ -40,19 +42,50 @@ public class CellManager {
         initCells();
     }
 
-    private void initCells() {
+    public CellManager(Context context, GridLayout gridLayout, RelativeLayout gameLayout, LoadingAnimator loadingAnimator, Cell[][] cells, String equation, Keyboard keyboard) {
+        this.context = context;
+        this.gridLayout = gridLayout;
+        if (cells.length > 0)
+            this.rowCount = cells[0].length;
+        else
+            this.rowCount = 0;
+        this.columnCount = cells.length;
+        this.equation = equation;
+        this.keyboard = keyboard;
+        this.gameLayout = gameLayout;
+        this.loadingAnimator = loadingAnimator;
+        grid = cells;
+        gridLayout.setRowCount(rowCount);
+        gridLayout.setColumnCount(columnCount);
+        currentRow = 0;
+        initExistingCells();
+    }
+
+    private void initExistingCells() {
         gridLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
                 int width = calculateCellWidth();
-                LoadCellsTask task = new LoadCellsTask();
+                LoadExistingCellsTask task = new LoadExistingCellsTask();
                 task.execute(width);
                 gridLayout.removeOnLayoutChangeListener(this);
             }
         });
     }
 
-    private final class LoadCellsTask extends AsyncTask<Integer, Void, Void> {
+    private void initCells() {
+        gridLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                int width = calculateCellWidth();
+                LoadNewCellsTask task = new LoadNewCellsTask();
+                task.execute(width);
+                gridLayout.removeOnLayoutChangeListener(this);
+            }
+        });
+    }
+
+    private final class LoadNewCellsTask extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... integers) {
             for (int k = 0; k < rowCount; k++) {
@@ -64,6 +97,47 @@ public class CellManager {
                     if (k != 0) temp.disableFocus();
                     if (j != 0) grid[k][j - 1].setNext(temp);
                     grid[k][j] = temp;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            for (int k = 0; k < rowCount; k++) {
+                for (int j = 0; j < columnCount; j++) {
+                    gridLayout.addView(grid[k][j]);
+                }
+            }
+            loadingAnimator.setVisibility(View.INVISIBLE);
+            gameLayout.setVisibility(View.VISIBLE);
+            Animation fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+            fadeOutAnimation.setDuration(1000);
+            fadeOutAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            gameLayout.setAnimation(fadeOutAnimation);
+            Animation fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
+            fadeInAnimation.setDuration(1000);
+            fadeInAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            loadingAnimator.setAnimation(fadeInAnimation);
+        }
+    }
+
+    private final class LoadExistingCellsTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            for (int k = 0; k < rowCount; k++) {
+                boolean isRowFull = isRowFull(grid[k]);
+                for (int j = 0; j < columnCount; j++) {
+                    grid[k][j].setSize(integers[0], integers[0]);
+                    GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
+                    grid[k][j].setLayoutParams(param);
+                    if (isRowFull || k > currentRow) grid[k][j].disableFocus();
+                    if (j != 0) grid[k][j - 1].setNext(grid[k][j]);
+                }
+                if (isRowFull) {
+                    currentRow++;
+                    paintRow(grid[k]);
                 }
             }
             return null;
@@ -133,6 +207,15 @@ public class CellManager {
         return won;
     }
 
+    private boolean isRowFull(Cell[] cells) {
+        for (Cell cell : cells) {
+            if (cell.getContent() == null || cell.getContent().equals(" ") || cell.getContent().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void startCellAnim(final View view, Cell cell, int color, int delay) {
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.scale_in);
         animation.setStartOffset(delay * 100L);
@@ -178,11 +261,68 @@ public class CellManager {
         return true;
     }
 
+    private void paintRow(Cell[] cell) {
+        boolean won = true;
+        for (int i = 0; i < cell.length; i++) {
+            if (cell[i].getContent().charAt(0) == equation.charAt(i)) {
+                startCellAnim(cell[i].getView(), cell[i], Cell.RIGHT, i);
+                keyboard.updateKeyColor(cell[i].getContent(), ContextCompat.getColor(context, R.color.cell_right));
+            } else if (equation.contains(cell[i].getContent())) {
+                startCellAnim(cell[i].getView(), cell[i], Cell.CLOSE, i);
+                keyboard.updateKeyColor(cell[i].getContent(), ContextCompat.getColor(context, R.color.cell_close));
+                won = false;
+            } else {
+                startCellAnim(cell[i].getView(), cell[i], Cell.WRONG, i);
+                keyboard.updateKeyColor(cell[i].getContent(), ContextCompat.getColor(context, R.color.cell_wrong));
+                won = false;
+            }
+        }
+        if (won) disableAll();
+    }
+
+    public boolean isGameFinished() {
+        for (int i = 0; i < rowCount; i++) {
+            boolean won = true;
+            for (int j = 0; j < columnCount; j++) {
+                if (grid[i][j].getContent().equals("") || grid[i][j].getContent().equals(" "))
+                    return false;
+                if (grid[i][j].getContent().equals("") || grid[i][j].getContent().equals(" "))
+                    return false;
+                if (grid[i][j].getContent().length() == 0 || grid[i][j].getContent().charAt(0) != equation.charAt(j)) {
+                    won = false;
+                }
+            }
+            if (won) return true;
+        }
+        return true;
+    }
+
+    public boolean isWon() {
+        for (int i = 0; i < rowCount; i++) {
+            boolean won = true;
+            for (int j = 0; j < columnCount; j++) {
+                if (grid[i][j].getContent().length() == 0 || grid[i][j].getContent().charAt(0) != equation.charAt(j)) {
+                    won = false;
+                }
+            }
+            if (won) return true;
+        }
+        return false;
+    }
+
     public void disableAll() {
         for (Cell[] i : grid) {
             for (Cell j : i) {
                 j.disableFocus();
             }
         }
+    }
+
+    public Cell[][] getCells() {
+        return grid;
+    }
+
+    public String getEquation() {
+        return equation;
     }
 }

@@ -30,6 +30,7 @@ public class Cell extends FrameLayout {
     private RelativeLayout layout;
     private boolean restoredText;
     private final Keyboard keyboard;
+    private String content;
 
     public Cell(@NonNull Context context, Keyboard keyboard) {
         super(context);

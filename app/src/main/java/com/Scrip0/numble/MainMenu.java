@@ -1,10 +1,15 @@
 package com.Scrip0.numble;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.Scrip0.numble.Database.HistoryDaoClass;
+import com.Scrip0.numble.Database.HistoryDatabaseClass;
+import com.Scrip0.numble.Database.HistoryModel;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -12,6 +17,8 @@ public class MainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        finishGame();
 
         Button newGameBtn = findViewById(R.id.newGameBtn);
 
@@ -22,5 +29,13 @@ public class MainMenu extends AppCompatActivity {
                 new StartNewGameDialog().show(getSupportFragmentManager(), "dialog");
             }
         });
+    }
+
+    private void finishGame() {
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getBaseContext().getApplicationContext()).getDao();
+        HistoryModel model = database.selectLast();
+        if (model != null && !model.isFinished()) {
+            new ContinueSavedGameDialog().show(getSupportFragmentManager(), "gamedialog");
+        }
     }
 }
