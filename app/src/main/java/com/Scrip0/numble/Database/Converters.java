@@ -18,8 +18,7 @@ public class Converters {
         for (int i = 0; i < rows.length; i++) {
             values = rows[i].split(";");
             for (int j = 0; j < values.length; j++) {
-                c[i][j] =
-                values[j].charAt(0);
+                c[i][j] = values[j].charAt(0);
             }
         }
         return c;
