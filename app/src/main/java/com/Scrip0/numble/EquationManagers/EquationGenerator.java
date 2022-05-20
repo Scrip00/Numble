@@ -5,9 +5,8 @@ import java.util.Arrays;
 
 public class EquationGenerator {
     private String equation;
-    private int length;
-    private final String[] operators = new String[]{"+", "-", "*", "/", "^", "!"};
-    private EquationSolver solver;
+    private final int length;
+    private final EquationSolver solver;
 
     public EquationGenerator(int length) {
         if (length < 3)
@@ -176,6 +175,7 @@ public class EquationGenerator {
     private void addSum() {
         int choice = getRandomNumber(0, 100);
         if (choice < 10) {
+            if (length == 7) return;
             int index = pickRandomNumber();
             int number = getNumberFromEquation(index);
             int random = getRandomNumber(1, 1000 - number);

@@ -51,10 +51,10 @@ public class CellManager {
         this.context = context;
         this.gridLayout = gridLayout;
         if (cells.length > 0)
-            this.rowCount = cells[0].length;
+            this.rowCount = cells.length;
         else
             this.rowCount = 0;
-        this.columnCount = cells.length;
+        this.columnCount = cells[0].length;
         this.equation = equation;
         this.keyboard = keyboard;
         this.gameLayout = gameLayout;

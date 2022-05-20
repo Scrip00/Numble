@@ -14,11 +14,12 @@ public class Converters {
         String[] rows = value.split("\\|");
         if (rows.length == 0) return new char[0][0];
         String[] values = rows[0].split(";");
-        char[][] c = new char[values.length][rows.length];
-        for (int i = 0; i < values.length; i++) {
+        char[][] c = new char[rows.length][values.length];
+        for (int i = 0; i < rows.length; i++) {
             values = rows[i].split(";");
-            for (int j = 0; j < rows.length; j++) {
-                c[i][j] = values[j].charAt(0);
+            for (int j = 0; j < values.length; j++) {
+                c[i][j] =
+                values[j].charAt(0);
             }
         }
         return c;
