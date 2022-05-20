@@ -20,10 +20,7 @@ public interface HistoryDaoClass {
     @Query("delete from user where `key`= :key")
     void deleteData(int key);
 
-//    //Update Data
-//    @Query("update user SET time =:time, cells =:cells, equation = :equation, won = :won, finished = :finished where `key`= :key")
-//    void updateData(String time, char[][] cells, String equation, boolean won, boolean finished, int key);
-
+    // Get last added model
     @Query("SELECT * FROM user ORDER BY `key` DESC LIMIT 1")
     HistoryModel selectLast();
 

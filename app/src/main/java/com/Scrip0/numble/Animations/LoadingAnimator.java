@@ -38,6 +38,7 @@ public class LoadingAnimator extends ConstraintLayout {
     private void init(Context context, AttributeSet attrs) {
         LayoutInflater.from(context).inflate(R.layout.loading_anim, this, true);
         ArrayList<TextView> tiles = new ArrayList<>();
+        // Adding all the loading tiles to the list for further animation
         tiles.add(findViewById(R.id.tile1));
         tiles.add(findViewById(R.id.tile2));
         tiles.add(findViewById(R.id.tile3));
@@ -47,10 +48,9 @@ public class LoadingAnimator extends ConstraintLayout {
         timer = new Timer();
         timer.schedule(new TimerTask() {
             int i = 0;
-
             @Override
             public void run() {
-                if (i == 0) {
+                if (i == 0) { // Tiles flip from colored once to black and back infinitely
                     i = 1;
                     startTileAnim(tiles.get(0), ContextCompat.getColor(context, R.color.cell_wrong), 0);
                     startTileAnim(tiles.get(1), ContextCompat.getColor(context, R.color.cell_close), 1);
@@ -70,6 +70,7 @@ public class LoadingAnimator extends ConstraintLayout {
     }
 
     private void startTileAnim(final TextView tile, int color, int delay) {
+        // Do the first flip, change color and do the second flip
         Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.scale_in);
         animation.setStartOffset(delay * 100L);
         animation.setInterpolator(new AccelerateDecelerateInterpolator());

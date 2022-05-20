@@ -1,5 +1,6 @@
 package com.Scrip0.numble.CustomLayouts;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -7,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -19,6 +21,7 @@ import androidx.annotation.NonNull;
 
 import com.Scrip0.numble.R;
 
+@SuppressLint("ViewConstructor")
 public class Cell extends FrameLayout {
 
     public static final int DEFAULT = 0;
@@ -32,7 +35,6 @@ public class Cell extends FrameLayout {
     private RelativeLayout layout;
     private boolean restoredText;
     private final Keyboard keyboard;
-    private String content;
 
     public Cell(@NonNull Context context, Keyboard keyboard) {
         super(context);
@@ -47,7 +49,7 @@ public class Cell extends FrameLayout {
         textField.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (b) {
+                if (b) { // If focus gained, setup input connection
                     textField.setRawInputType(InputType.TYPE_CLASS_TEXT);
                     textField.setTextIsSelectable(true);
                     textField.setShowSoftInputOnFocus(false);
@@ -55,13 +57,14 @@ public class Cell extends FrameLayout {
                     InputConnection ic = textField.onCreateInputConnection(new EditorInfo());
                     keyboard.setInputConnection(ic);
                 }
-                if (b && textField.getText().length() > 0) {
+
+                if (b && textField.getText().length() > 0) { // If focused gained, delete and remember previous content
                     prevContent = String.valueOf(textField.getText());
                     restoredText = false;
                     textField.setText("");
                 }
 
-                if (!b && textField.getText().length() < 1) {
+                if (!b && textField.getText().length() < 1) { // If focus lost, restore previous text
                     restoredText = true;
                     textField.setText(prevContent);
                 }
@@ -82,11 +85,10 @@ public class Cell extends FrameLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (textField.getText().length() > 0 && !restoredText) {
+                if (textField.getText().length() > 0 && !restoredText) { // If new text and text is not restored
                     textField.clearFocus();
-                    if (next != null) {
+                    if (next != null)
                         next.setFocus();
-                    }
                 }
             }
         });

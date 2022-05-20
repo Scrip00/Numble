@@ -19,7 +19,7 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        finishGame();
+        finishGame(); // Check if there is unfinished game and propose to finish it
 
         Button newGameBtn = findViewById(R.id.newGameBtn);
 

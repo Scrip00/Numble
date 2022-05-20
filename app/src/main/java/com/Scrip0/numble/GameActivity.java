@@ -30,6 +30,7 @@ public class GameActivity extends AppCompatActivity {
     private LoadingAnimator loadingAnimator;
     private RelativeLayout gameLayout;
     private CellManager manager;
+    private boolean savedAndCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class GameActivity extends AppCompatActivity {
 
         boolean loadSavedGame = getIntent().getBooleanExtra("LoadSavedGame", false);
 
-        if (loadSavedGame) {
+        if (loadSavedGame) { // If it's not a new game
             initSavedGame();
         } else {
             initNewGame(equationLength, numtries, withMult, withPower, withFact);
@@ -93,8 +94,9 @@ public class GameActivity extends AppCompatActivity {
         HistoryModel model = database.selectLast();
         Cell[][] cells = initCellsFromDatabase(model.getCells());
         manager = new CellManager(getBaseContext(), gridLayout, gameLayout, loadingAnimator, cells, model.getEquation(), keyboard);
-
+        savedAndCompleted = true;
         if (!manager.isGameFinished()) {
+            savedAndCompleted = false;
             nextBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,6 +116,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private Cell[][] initCellsFromDatabase(char[][] c) {
+        // Convert char array to cells array because it's impossible to implement in database converters (cells need context)
         Cell[][] cells = new Cell[c.length][c[0].length];
         for (int i = 0; i < c.length; i++) {
             for (int j = 0; j < c[0].length; j++) {
@@ -137,13 +140,12 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        saveGameToHistory();
+        if (!savedAndCompleted) saveGameToHistory(); // If loaded game was not previously completed
         super.onBackPressed();
     }
 
     private void saveGameToHistory() {
         deleteUnsavedGame();
-        Log.d("LOLPP", String.valueOf(manager.getCells().length));
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getBaseContext().getApplicationContext()).getDao();
         HistoryModel model = new HistoryModel();
         model.setCells(charArrayFromCells(manager.getCells()));

@@ -1,5 +1,6 @@
 package com.Scrip0.numble.Cells;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -89,16 +90,19 @@ public class CellManager {
         });
     }
 
+    @SuppressLint("StaticFieldLeak")
     private final class LoadNewCellsTask extends AsyncTask<Integer, Void, Void> {
+        // The task to load cells of the new game
+
         @Override
         protected Void doInBackground(Integer... integers) {
             for (int k = 0; k < rowCount; k++) {
                 for (int j = 0; j < columnCount; j++) {
                     Cell temp = new Cell(context, keyboard);
-                    temp.setSize(integers[0], integers[0]);
+                    temp.setSize(integers[0], integers[0]); // Set cell size to the calculated one
                     GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
                     temp.setLayoutParams(param);
-                    if (k != 0) temp.disableFocus();
+                    if (k != 0) temp.disableFocus(); // If first row, enable focus
                     if (j != 0) grid[k][j - 1].setNext(temp);
                     grid[k][j] = temp;
                 }
@@ -108,6 +112,7 @@ public class CellManager {
 
         @Override
         protected void onPostExecute(Void unused) {
+            // Add generated calls to the grid and disable loading anim
             for (int k = 0; k < rowCount; k++) {
                 for (int j = 0; j < columnCount; j++) {
                     gridLayout.addView(grid[k][j]);
@@ -126,20 +131,23 @@ public class CellManager {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private final class LoadExistingCellsTask extends AsyncTask<Integer, Void, Void> {
+        // The task to load cells of the already existing game
 
         @Override
         protected Void doInBackground(Integer... integers) {
             for (int k = 0; k < rowCount; k++) {
                 boolean isRowFull = isRowFull(grid[k]);
                 for (int j = 0; j < columnCount; j++) {
-                    grid[k][j].setSize(integers[0], integers[0]);
+                    grid[k][j].setSize(integers[0], integers[0]); // Set cell size to the calculated one
                     GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
                     grid[k][j].setLayoutParams(param);
-                    if (isRowFull || k > currentRow) grid[k][j].disableFocus();
+                    if (isRowFull || k > currentRow)
+                        grid[k][j].disableFocus();  // If row iss full or it's number is greater that playable row, disable focus
                     if (j != 0) grid[k][j - 1].setNext(grid[k][j]);
                 }
-                if (isRowFull) {
+                if (isRowFull) { // Find playable row number
                     currentRow++;
                     paintRow(grid[k]);
                 }
@@ -149,6 +157,7 @@ public class CellManager {
 
         @Override
         protected void onPostExecute(Void unused) {
+            // Add generated calls to the grid and disable loading anim
             for (int k = 0; k < rowCount; k++) {
                 for (int j = 0; j < columnCount; j++) {
                     gridLayout.addView(grid[k][j]);
@@ -221,6 +230,7 @@ public class CellManager {
     }
 
     private void startCellAnim(final View view, Cell cell, int color, int delay) {
+        // Animation of flipping cells
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.scale_in);
         animation.setStartOffset(delay * 100L);
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -266,6 +276,7 @@ public class CellManager {
     }
 
     private void paintRow(Cell[] cell) {
+        // Paints row according to the generated equation
         boolean won = true;
         for (int i = 0; i < cell.length; i++) {
             if (cell[i].getContent().charAt(0) == equation.charAt(i)) {
@@ -281,18 +292,17 @@ public class CellManager {
                 won = false;
             }
         }
-        if (won) disableAll();
+        if (won) disableAll(); // If game is finished, disable all cells
     }
 
     public boolean isGameFinished() {
         for (int i = 0; i < rowCount; i++) {
             boolean won = true;
             for (int j = 0; j < columnCount; j++) {
-                if (grid[i][j].getContent().equals("") || grid[i][j].getContent().equals(" "))
+                String temp = grid[i][j].getContent();
+                if (temp.equals("") || temp.equals(" "))
                     return false;
-                if (grid[i][j].getContent().equals("") || grid[i][j].getContent().equals(" "))
-                    return false;
-                if (grid[i][j].getContent().length() == 0 || grid[i][j].getContent().charAt(0) != equation.charAt(j)) {
+                if (temp.length() == 0 || temp.charAt(0) != equation.charAt(j)) {
                     won = false;
                 }
             }
@@ -305,7 +315,8 @@ public class CellManager {
         for (int i = 0; i < rowCount; i++) {
             boolean won = true;
             for (int j = 0; j < columnCount; j++) {
-                if (grid[i][j].getContent().length() == 0 || grid[i][j].getContent().charAt(0) != equation.charAt(j)) {
+                String temp = grid[i][j].getContent();
+                if (temp.length() == 0 || temp.charAt(0) != equation.charAt(j)) {
                     won = false;
                 }
             }
