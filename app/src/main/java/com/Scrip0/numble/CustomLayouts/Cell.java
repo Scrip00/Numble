@@ -35,11 +35,13 @@ public class Cell extends FrameLayout {
     private RelativeLayout layout;
     private boolean restoredText;
     private final Keyboard keyboard;
+    private int color;
 
     public Cell(@NonNull Context context, Keyboard keyboard) {
         super(context);
         this.keyboard = keyboard;
         initView();
+        color = DEFAULT;
     }
 
     private void initView() {
@@ -134,8 +136,8 @@ public class Cell extends FrameLayout {
         background.setStroke(width / 14, Color.BLACK);
     }
 
-
     public void setBackground(int background) {
+        color = background;
         switch (background) {
             case DEFAULT:
                 layout.getBackground().setColorFilter(getResources().getColor(R.color.cell_default), PorterDuff.Mode.MULTIPLY);
@@ -150,5 +152,9 @@ public class Cell extends FrameLayout {
                 layout.getBackground().setColorFilter(getResources().getColor(R.color.cell_right), PorterDuff.Mode.MULTIPLY);
                 break;
         }
+    }
+
+    public int getBackgroundColor() {
+        return color;
     }
 }
