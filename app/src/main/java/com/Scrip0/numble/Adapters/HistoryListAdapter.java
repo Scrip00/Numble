@@ -5,6 +5,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -104,6 +108,13 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
             viewHolder.getTriesView().setTextColor(context.getColor(R.color.cell_right));
         }
 
+        setFadeOutAnimation(viewHolder.getViewHolderView());
+    }
+
+    private void setFadeOutAnimation(View view) {
+        Animation anim = AnimationUtils.loadAnimation(context, R.anim.fade_out);
+        anim.setDuration(500);
+        view.startAnimation(anim);
     }
 
     @Override

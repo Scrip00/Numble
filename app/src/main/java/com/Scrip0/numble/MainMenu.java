@@ -45,7 +45,6 @@ public class MainMenu extends AppCompatActivity {
     private void finishGame() {
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getBaseContext().getApplicationContext()).getDao();
         HistoryModel model = database.selectLast();
-        Log.d("LOLPP", model.getEquation());
         if (model != null && !model.isFinished()) {
             new ContinueSavedGameDialog().show(getSupportFragmentManager(), "gamedialog");
         }
