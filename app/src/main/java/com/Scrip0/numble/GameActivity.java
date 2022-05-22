@@ -153,6 +153,7 @@ public class GameActivity extends AppCompatActivity {
         model.setFinished(manager.isGameFinished());
         model.setWon(manager.isWon());
         model.setTime(String.valueOf(new Date().getDate()));
+        model.setCurrentRow(manager.getCurrentRow());
         database.insertData(model);
     }
 

@@ -24,6 +24,9 @@ public class HistoryModel {
     @ColumnInfo(name = "equation")
     private String equation;
 
+    @ColumnInfo(name = "current_row")
+    private int currentRow;
+
     @ColumnInfo(name = "won")
     private boolean won;
 
@@ -60,6 +63,14 @@ public class HistoryModel {
 
     public void setEquation(String equation) {
         this.equation = equation;
+    }
+
+    public int getCurrentRow() {
+        return currentRow;
+    }
+
+    public void setCurrentRow(int currentRow) {
+        this.currentRow = currentRow;
     }
 
     public boolean isWon() {

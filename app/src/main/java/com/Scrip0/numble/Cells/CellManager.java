@@ -340,4 +340,8 @@ public class CellManager {
     public String getEquation() {
         return equation;
     }
+
+    public int getCurrentRow() {
+        return currentRow;
+    }
 }
