@@ -20,7 +20,10 @@ import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
 import com.Scrip0.numble.EquationManagers.EquationGenerator;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -152,7 +155,8 @@ public class GameActivity extends AppCompatActivity {
         model.setEquation(manager.getEquation());
         model.setFinished(manager.isGameFinished());
         model.setWon(manager.isWon());
-        model.setTime(String.valueOf(new Date().getDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy, HH:mm", Locale.getDefault());
+        model.setTime(sdf.format(new Date()));
         model.setCurrentRow(manager.getCurrentRow());
         database.insertData(model);
     }

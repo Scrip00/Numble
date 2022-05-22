@@ -24,6 +24,7 @@ public class HistoryActivity extends AppCompatActivity {
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
 
         List<HistoryModel> games = database.getAllData();
+        if (!games.get(games.size() - 1).isFinished()) games.remove(games.size() - 1);
 
         RecyclerView history_list = findViewById(R.id.history_list);
 

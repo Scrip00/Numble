@@ -2,6 +2,7 @@ package com.Scrip0.numble;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -44,6 +45,7 @@ public class MainMenu extends AppCompatActivity {
     private void finishGame() {
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getBaseContext().getApplicationContext()).getDao();
         HistoryModel model = database.selectLast();
+        Log.d("LOLPP", model.getEquation());
         if (model != null && !model.isFinished()) {
             new ContinueSavedGameDialog().show(getSupportFragmentManager(), "gamedialog");
         }

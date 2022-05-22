@@ -23,7 +23,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     private final Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView gridSizeView, dateView, triesView;
+        private final TextView gridSizeView, dateView, triesView, equationView;
         private final ImageView imageView;
 
         public ViewHolder(View view) {
@@ -33,6 +33,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
             gridSizeView = (TextView) view.findViewById(R.id.grid_size);
             dateView = (TextView) view.findViewById(R.id.date);
             triesView = (TextView) view.findViewById(R.id.tries);
+            equationView = (TextView) view.findViewById(R.id.equation);
 
             imageView = (ImageView) view.findViewById(R.id.imageView);
 
@@ -56,6 +57,10 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
 
         public ImageView getImageView() {
             return imageView;
+        }
+
+        public TextView getEquationView() {
+            return equationView;
         }
     }
 
@@ -90,6 +95,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
         viewHolder.getGridSizeView().setText(tempModel.getEquation().length() + " X " + tempModel.getCells().length);
         viewHolder.getDateView().setText(tempModel.getTime());
         viewHolder.getTriesView().setText(tempModel.getCurrentRow() + " / " + tempModel.getCells().length);
+        viewHolder.getEquationView().setText(tempModel.getEquation());
         if (!tempModel.isWon())
             viewHolder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sad_guy));
         else

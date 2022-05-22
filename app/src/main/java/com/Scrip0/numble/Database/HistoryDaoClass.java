@@ -21,7 +21,7 @@ public interface HistoryDaoClass {
     void deleteData(int key);
 
     // Get last added model
-    @Query("SELECT * FROM user ORDER BY `key` DESC LIMIT 1")
+    @Query("select * from user order by time desc, 'key' desc limit 1")
     HistoryModel selectLast();
 
 }
