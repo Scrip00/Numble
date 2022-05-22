@@ -2,11 +2,10 @@ package com.Scrip0.numble.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -17,13 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.Scrip0.numble.Database.HistoryModel;
 import com.Scrip0.numble.R;
+import com.Scrip0.numble.ViewSavedGameActivity;
 
 import java.util.Collections;
 import java.util.List;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.ViewHolder> {
 
-    private List<HistoryModel> games;
+    private static List<HistoryModel> games;
     private final Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -32,7 +32,15 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
 
         public ViewHolder(View view) {
             super(view);
-            // Define click listener for the ViewHolder's View
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), ViewSavedGameActivity.class);
+                    intent.putExtra("key", games.get(getAdapterPosition()).getKey());
+                    view.getContext().startActivity(intent);
+                }
+            });
 
             gridSizeView = (TextView) view.findViewById(R.id.grid_size);
             dateView = (TextView) view.findViewById(R.id.date);
