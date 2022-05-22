@@ -1,5 +1,6 @@
 package com.Scrip0.numble;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,12 +23,20 @@ public class MainMenu extends AppCompatActivity {
         finishGame(); // Check if there is unfinished game and propose to finish it
 
         Button newGameBtn = findViewById(R.id.newGameBtn);
-
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                 new StartNewGameDialog().show(getSupportFragmentManager(), "dialog");
+            }
+        });
+
+        Button gameHistoryBtn = findViewById(R.id.gameHistoryBtn);
+        gameHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent gameHistoryIntent = new Intent(getBaseContext(), HistoryActivity.class);
+                startActivity(gameHistoryIntent);
             }
         });
     }

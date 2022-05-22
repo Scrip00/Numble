@@ -97,8 +97,8 @@ public class StartNewGameDialog extends DialogFragment {
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private void initDialog(View dialogView) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        int length = sharedPrefs.getInt("Length", 4);
-        int numTries = sharedPrefs.getInt("Numtries", 6);
+        int length = sharedPrefs.getInt("Length", 7);
+        int numTries = sharedPrefs.getInt("Numtries", 7);
         boolean withMult = sharedPrefs.getBoolean("With_mult", true);
         boolean withPower = sharedPrefs.getBoolean("With_power", true);
         boolean withFact = sharedPrefs.getBoolean("With_fact", true);
