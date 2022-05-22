@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="100dp"
+    android:background="#e1e1e1">
 
     <TextView
         android:id="@+id/grid_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -22,6 +24,7 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
@@ -34,6 +37,7 @@
 
     <TextView
         android:id="@+id/equation"
+        android:gravity="end"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -41,8 +45,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_toStartOf="@+id/imageView"
-        android:layout_toEndOf="@+id/date"
+        android:layout_toStartOf="@+id/date"
+        android:layout_toEndOf="@+id/imageView"
         android:text="2+2=4"
         android:textColor="@color/cell_close"
         android:textSize="12sp"
@@ -53,8 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="20dp"
-        android:layout_toStartOf="@+id/imageView"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/imageView"
         android:text="2 / 4"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -64,11 +68,10 @@
         android:id="@+id/imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         app:srcCompat="@drawable/ic_cup" />
 </RelativeLayout>

@@ -83,7 +83,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
                     .inflate(R.layout.history_list_row_left, viewGroup, false);
         } else {
             view = LayoutInflater.from(viewGroup.getContext())
-                    .inflate(R.layout.history_list_row_left, viewGroup, false);
+                    .inflate(R.layout.history_list_row_right, viewGroup, false);
         }
         return new ViewHolder(view);
     }
@@ -96,10 +96,14 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
         viewHolder.getDateView().setText(tempModel.getTime());
         viewHolder.getTriesView().setText(tempModel.getCurrentRow() + " / " + tempModel.getCells().length);
         viewHolder.getEquationView().setText(tempModel.getEquation());
-        if (!tempModel.isWon())
+        if (!tempModel.isWon()) {
             viewHolder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_sad_guy));
-        else
+            viewHolder.getTriesView().setTextColor(context.getColor(R.color.cell_wrong));
+        } else {
             viewHolder.getImageView().setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cup));
+            viewHolder.getTriesView().setTextColor(context.getColor(R.color.cell_right));
+        }
+
     }
 
     @Override
