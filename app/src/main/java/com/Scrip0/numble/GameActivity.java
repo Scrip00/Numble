@@ -18,6 +18,8 @@ import com.Scrip0.numble.CustomLayouts.Keyboard;
 import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
+import com.Scrip0.numble.Dialogs.EndGameDialog;
+import com.Scrip0.numble.Dialogs.StartNewGameDialog;
 import com.Scrip0.numble.EquationManagers.EquationGenerator;
 
 import java.text.SimpleDateFormat;
@@ -83,6 +85,7 @@ public class GameActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
                         manager.disableAll();
                         nextBtn.setOnClickListener(null);
+                        new EndGameDialog(manager).show(getSupportFragmentManager(), "end game dialog");
                     }
                 } else {
                     Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
@@ -105,6 +108,7 @@ public class GameActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (!manager.reachedEnd()) {
                         if (manager.next()) {
+                            overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                             Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
                             manager.disableAll();
                             nextBtn.setOnClickListener(null);

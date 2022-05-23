@@ -2,7 +2,6 @@ package com.Scrip0.numble;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -71,7 +70,7 @@ public class ViewSavedGameActivity extends AppCompatActivity {
         return cells;
     }
 
-    private String generateShareText(HistoryModel game, CellManager manager) {
+    public static String generateShareText(HistoryModel game, CellManager manager) {
         StringBuilder str = new StringBuilder();
         str.append("Numble game\n");
         str.append(game.getEquation()).append("\n");

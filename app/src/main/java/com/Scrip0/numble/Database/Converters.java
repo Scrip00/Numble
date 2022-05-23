@@ -1,12 +1,9 @@
 package com.Scrip0.numble.Database;
 
-import android.util.Log;
-
 import androidx.room.TypeConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Converters {
     @TypeConverter
