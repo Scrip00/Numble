@@ -1,6 +1,7 @@
 package com.Scrip0.numble.Dialogs;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -55,6 +56,7 @@ public class StartNewGameDialog extends DialogFragment {
                         gameIntent.putExtra("With_power", withPower.isChecked());
                         gameIntent.putExtra("With_fact", withFact.isChecked());
                         startActivity(gameIntent);
+                        ((Activity) dialogView.getContext()).finish();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

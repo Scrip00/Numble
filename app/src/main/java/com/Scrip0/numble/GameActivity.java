@@ -1,5 +1,7 @@
 package com.Scrip0.numble;
 
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,12 +84,15 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!manager.reachedEnd()) {
                     if (manager.next()) {
+                        saveGameToHistory();
                         Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
                         manager.disableAll();
                         nextBtn.setOnClickListener(null);
-                        new EndGameDialog(manager).show(getSupportFragmentManager(), "end game dialog");
+                        new EndGameDialog(manager, true).show(getSupportFragmentManager(), "end game dialog");
                     }
                 } else {
+                    saveGameToHistory();
+                    new EndGameDialog(manager, false).show(getSupportFragmentManager(), "end game dialog");
                     Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
                     Toast.makeText(getBaseContext(), equation, Toast.LENGTH_LONG).show();
                 }
@@ -148,10 +153,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!savedAndCompleted) saveGameToHistory(); // If loaded game was not previously completed
-        super.onBackPressed();
+        Intent intent = new Intent(this, MainMenu.class);
+        startActivity(intent);
+        finish();
     }
 
     private void saveGameToHistory() {
+        savedAndCompleted = true;
         deleteUnsavedGame();
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getBaseContext().getApplicationContext()).getDao();
         HistoryModel model = new HistoryModel();
@@ -163,6 +171,12 @@ public class GameActivity extends AppCompatActivity {
         model.setTime(sdf.format(new Date()));
         model.setCurrentRow(manager.getCurrentRow());
         database.insertData(model);
+    }
+
+    @Override
+    protected void onPause() {
+        if (!savedAndCompleted) saveGameToHistory();
+        super.onPause();
     }
 
     private void deleteUnsavedGame() {

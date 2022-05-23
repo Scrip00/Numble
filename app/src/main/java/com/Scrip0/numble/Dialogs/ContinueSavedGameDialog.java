@@ -1,6 +1,7 @@
 package com.Scrip0.numble.Dialogs;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ public class ContinueSavedGameDialog extends DialogFragment {
                         Intent gameIntent = new Intent(getActivity(), GameActivity.class);
                         gameIntent.putExtra("LoadSavedGame", true);
                         startActivity(gameIntent);
+                        ((Activity) dialogView.getContext()).finish();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

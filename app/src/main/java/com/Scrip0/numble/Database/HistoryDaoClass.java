@@ -28,4 +28,9 @@ public interface HistoryDaoClass {
     @Query("select * from user order by time desc, 'key' desc limit 1")
     HistoryModel selectLast();
 
+    @Query("select * from user where time like '%'||:date||'%' and won = '1' and finished = '1'")
+    List<HistoryModel> getWonGames(String date);
+
+    @Query("select * from user where time like '%'||:date||'%' and won = '0' and finished = '1'")
+    List<HistoryModel> getLostGames(String date);
 }
