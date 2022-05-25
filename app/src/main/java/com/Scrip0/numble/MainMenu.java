@@ -40,6 +40,15 @@ public class MainMenu extends AppCompatActivity {
                 startActivity(gameHistoryIntent);
             }
         });
+
+        Button statisticsBtn = findViewById(R.id.statisticsBtn);
+        statisticsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent statsIntent = new Intent(getBaseContext(), StatisticsActivity.class);
+                startActivity(statsIntent);
+            }
+        });
     }
 
     private void finishGame() {

@@ -33,4 +33,7 @@ public interface HistoryDaoClass {
 
     @Query("select * from user where time like '%'||:date||'%' and won = '0' and finished = '1'")
     List<HistoryModel> getLostGames(String date);
+
+    @Query("select * from user where time like '%'||:date||'%' and finished = '1'")
+    List<HistoryModel> getAllGames(String date);
 }

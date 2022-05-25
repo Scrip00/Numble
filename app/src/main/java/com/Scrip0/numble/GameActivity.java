@@ -1,10 +1,8 @@
 package com.Scrip0.numble;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -14,18 +12,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Scrip0.numble.Animations.LoadingAnimator;
-import com.Scrip0.numble.CustomLayouts.Cell;
 import com.Scrip0.numble.Cells.CellManager;
+import com.Scrip0.numble.CustomLayouts.Cell;
 import com.Scrip0.numble.CustomLayouts.Keyboard;
 import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
 import com.Scrip0.numble.Dialogs.EndGameDialog;
-import com.Scrip0.numble.Dialogs.StartNewGameDialog;
 import com.Scrip0.numble.EquationManagers.EquationGenerator;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
