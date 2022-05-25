@@ -1,6 +1,8 @@
 package com.Scrip0.numble;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -18,10 +20,13 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -40,6 +45,52 @@ public class StatisticsActivity extends AppCompatActivity {
 
         BarChart winStatChartToday = findViewById(R.id.winStatChartToday);
         initializeWinBarChartToday(winStatChartToday);
+
+        TextView textGamesPlayed = findViewById(R.id.text_games_played);
+        initializeTextGamesPlayed(textGamesPlayed);
+
+        TextView textWon = findViewById(R.id.text_won);
+        initializeTextWon(textWon);
+
+        TextView textSettings = findViewById(R.id.text_settings);
+        initializeTextSettings(textSettings);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void initializeTextSettings(TextView text) {
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
+        HashMap<String, Integer> map = new HashMap<>();
+        for (HistoryModel model : database.getAllGames("")) {
+            String settings = model.getCells()[0].length + " X " + model.getCells().length;
+            if (!map.containsKey(settings)) map.put(settings, 0);
+            map.put(settings, map.get(settings) + 1);
+        }
+        String setting = "";
+        int max = 0;
+        for (String key : map.keySet()) {
+            if (!map.containsKey(setting)) {
+                setting = key;
+                max = map.get(setting);
+            }
+            if (map.get(setting) >= max) {
+                setting = key;
+                max = map.get(setting);
+            }
+        }
+        text.setText(setting);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void initializeTextWon(TextView text) {
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
+        if (database.getWonGames("").size() > 0)
+            text.setText((int) ((double) database.getWonGames("").size() / (double) database.getAllGames("").size() * 100) + "%");
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void initializeTextGamesPlayed(TextView text) {
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
+        text.setText(Integer.toString(database.getAllGames("").size()));
     }
 
     private void initializeWinBarChart(BarChart chart) {
