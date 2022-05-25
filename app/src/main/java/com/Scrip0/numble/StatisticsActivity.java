@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
+import com.Scrip0.numble.Database.HistoryModel;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -17,8 +18,12 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class StatisticsActivity extends AppCompatActivity {
 
@@ -26,12 +31,20 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-
+//
         BarChart winChart = findViewById(R.id.winStatChart);
         initializeWinBarChart(winChart);
+
+        BarChart winStatChartMonth = findViewById(R.id.winStatChartMonth);
+        initializeWinBarChartMonth(winStatChartMonth);
+
+        BarChart winStatChartToday = findViewById(R.id.winStatChartToday);
+        initializeWinBarChartToday(winStatChartToday);
     }
 
     private void initializeWinBarChart(BarChart chart) {
+        chart.setNoDataText("You haven't played games for now");
+
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
         ArrayList<String> names = new ArrayList<>(Arrays.asList("Won", "Lost"));
 
@@ -40,7 +53,56 @@ public class StatisticsActivity extends AppCompatActivity {
 
         ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(ContextCompat.getColor(this, R.color.cell_right), ContextCompat.getColor(this, R.color.cell_wrong)));
         initializeBarChart(chart);
-        createBarChart(chart, dataset, names, colors, allGamesCount);
+        if (dataset.size() > 0)
+            createBarChart(chart, dataset, names, colors, allGamesCount);
+    }
+
+    private void initializeWinBarChartMonth(BarChart chart) {
+        chart.setNoDataText("You haven't played games this month");
+
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
+        ArrayList<String> names = new ArrayList<>(Arrays.asList("Won", "Lost"));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.getDefault());
+        String month = sdf.format(new Date());
+        sdf = new SimpleDateFormat("yyyy", Locale.getDefault());
+        String year = sdf.format(new Date());
+
+        List<HistoryModel> models = database.getAllGames(month);
+
+        models.retainAll(database.getAllGames(year));
+
+        List<HistoryModel> modelsWon = database.getWonGames(month);
+        modelsWon.retainAll(database.getWonGames(year));
+
+        List<HistoryModel> modelsLost = database.getLostGames(month);
+        modelsLost.retainAll(database.getLostGames(year));
+
+        float allGamesCount = models.size();
+        ArrayList<Float> dataset = new ArrayList<Float>(Arrays.asList((float) modelsWon.size(), (float) modelsLost.size()));
+
+        ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(ContextCompat.getColor(this, R.color.cell_right), ContextCompat.getColor(this, R.color.cell_wrong)));
+        initializeBarChart(chart);
+        if (dataset.size() > 0)
+            createBarChart(chart, dataset, names, colors, allGamesCount);
+    }
+
+    private void initializeWinBarChartToday(BarChart chart) {
+        chart.setNoDataText("You haven't played games today yet");
+
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
+        ArrayList<String> names = new ArrayList<>(Arrays.asList("Won", "Lost"));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+        String date = sdf.format(new Date());
+
+        float allGamesCount = database.getAllGames(date).size();
+        ArrayList<Float> dataset = new ArrayList<Float>(Arrays.asList((float) database.getWonGames(date).size(), (float) database.getLostGames(date).size()));
+
+        ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(ContextCompat.getColor(this, R.color.cell_right), ContextCompat.getColor(this, R.color.cell_wrong)));
+        initializeBarChart(chart);
+        if (dataset.size() > 0)
+            createBarChart(chart, dataset, names, colors, allGamesCount);
     }
 
     private void initializeBarChart(BarChart chart) {

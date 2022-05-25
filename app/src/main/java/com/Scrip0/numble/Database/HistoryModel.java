@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 @Entity(tableName = "user")
 public class HistoryModel {
 
@@ -87,5 +90,20 @@ public class HistoryModel {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HistoryModel that = (HistoryModel) o;
+        return key == that.key && currentRow == that.currentRow && won == that.won && finished == that.finished && time.equals(that.time) && equation.equals(that.equation);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(key, time, equation, currentRow, won, finished);
+        result = 31 * result + Arrays.hashCode(cells);
+        return result;
     }
 }
