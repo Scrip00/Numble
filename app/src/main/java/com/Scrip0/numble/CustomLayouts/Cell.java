@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -88,6 +89,7 @@ public class Cell extends FrameLayout {
             public void afterTextChanged(Editable editable) {
                 if (textField.getText().length() > 0 && !restoredText) { // If new text and text is not restored
                     textField.clearFocus();
+                    restoredText = true;
                     if (next != null)
                         next.setFocus();
                 }

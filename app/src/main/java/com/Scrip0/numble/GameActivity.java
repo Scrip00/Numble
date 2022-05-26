@@ -75,26 +75,30 @@ public class GameActivity extends AppCompatActivity {
     private void initNewGame(int equationLength, int numtries, boolean withMult, boolean withPower, boolean withFact) {
         String equation = new EquationGenerator(equationLength, withMult, withPower, withFact).getEquation();
         manager = new CellManager(getBaseContext(), gridLayout, gameLayout, loadingAnimator, numtries, equationLength, equation, keyboard);
-
+//        Toast.makeText(getBaseContext(), equation, Toast.LENGTH_LONG).show();
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!manager.reachedEnd()) {
                     if (manager.next()) {
                         saveGameToHistory();
-                        Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
                         manager.disableAll();
                         nextBtn.setOnClickListener(null);
                         new EndGameDialog(manager, true).show(getSupportFragmentManager(), "end game dialog");
-                    }
+                    } else if (manager.reachedEnd()) gameLost(equation);
                 } else {
-                    saveGameToHistory();
-                    new EndGameDialog(manager, false).show(getSupportFragmentManager(), "end game dialog");
-                    Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getBaseContext(), equation, Toast.LENGTH_LONG).show();
+                    gameLost(equation);
                 }
             }
         });
+    }
+
+    private void gameLost(String equation) {
+        saveGameToHistory();
+        new EndGameDialog(manager, false).show(getSupportFragmentManager(), "end game dialog");
+//        Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getBaseContext(), equation, Toast.LENGTH_LONG).show();
     }
 
     private void initSavedGame() {
@@ -149,7 +153,8 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!savedAndCompleted) saveGameToHistory(); // If loaded game was not previously completed
+        if (!savedAndCompleted)
+            saveGameToHistory(); // If loaded game was not previously completed
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_out, R.anim.fade_in);

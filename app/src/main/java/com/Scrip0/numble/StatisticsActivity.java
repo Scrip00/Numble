@@ -159,7 +159,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 setting = key;
                 max = map.get(setting);
             }
-            if (map.get(setting) > max) {
+            if (map.get(key) > max) {
                 setting = key;
                 max = map.get(setting);
             }

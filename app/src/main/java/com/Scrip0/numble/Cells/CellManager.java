@@ -107,6 +107,7 @@ public class CellManager {
                     grid[k][j] = temp;
                 }
             }
+            grid[0][0].setFocus();
             return null;
         }
 
@@ -143,11 +144,11 @@ public class CellManager {
                     grid[k][j].setSize(integers[0], integers[0]); // Set cell size to the calculated one
                     GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
                     grid[k][j].setLayoutParams(param);
-                    if (isRowFull || k > currentRow)
+                    if (isRowFull && isCurrentEquationCorrect() || k > currentRow)
                         grid[k][j].disableFocus();  // If row iss full or it's number is greater that playable row, disable focus
                     if (j != 0) grid[k][j - 1].setNext(grid[k][j]);
                 }
-                if (isRowFull) { // Find playable row number
+                if (isRowFull && isCurrentEquationCorrect()) { // Find playable row number
                     currentRow++;
                     paintRow(grid[k]);
                 }
@@ -190,7 +191,7 @@ public class CellManager {
 
     public boolean next() {
         if (!isCurrentEquationCorrect()) {
-            Toast.makeText(context, "INCORRECT", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "The equation is incorrect", Toast.LENGTH_SHORT).show();
             return false;
         }
         boolean won = true;
@@ -213,6 +214,7 @@ public class CellManager {
             if (hasNext()) {
                 temp = grid[currentRow + 1][i];
                 temp.enableFocus();
+                if (i == 0) temp.setFocus();
             }
 
         }
@@ -259,6 +261,7 @@ public class CellManager {
     private boolean isCurrentEquationCorrect() {
         String equation = "";
         for (int i = 0; i < columnCount; i++) {
+            grid[currentRow][i].clearFocus();
             String content = grid[currentRow][i].getContent();
             if (content.isEmpty()) return false;
             equation += content;
