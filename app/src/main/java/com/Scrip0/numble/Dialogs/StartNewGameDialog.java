@@ -112,5 +112,29 @@ public class StartNewGameDialog extends DialogFragment {
         withFactSwitch.setChecked(withFact);
         initializeSeekBar(dialogView.findViewById(R.id.seekBarLength), dialogView.findViewById(R.id.textViewSeekbarLength), 3, 60, length);
         initializeSeekBar(dialogView.findViewById(R.id.seekBarNumtries), dialogView.findViewById(R.id.textViewSeekbarNumtries), 1, 50, numTries);
+
+        dialogView.findViewById(R.id.buttonPreset1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initializeSeekBar(dialogView.findViewById(R.id.seekBarLength), dialogView.findViewById(R.id.textViewSeekbarLength), 3, 60, 7);
+                initializeSeekBar(dialogView.findViewById(R.id.seekBarNumtries), dialogView.findViewById(R.id.textViewSeekbarNumtries), 1, 50, 7);
+            }
+        });
+
+        dialogView.findViewById(R.id.buttonPreset2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initializeSeekBar(dialogView.findViewById(R.id.seekBarLength), dialogView.findViewById(R.id.textViewSeekbarLength), 3, 60, 8);
+                initializeSeekBar(dialogView.findViewById(R.id.seekBarNumtries), dialogView.findViewById(R.id.textViewSeekbarNumtries), 1, 50, 12);
+            }
+        });
+
+        dialogView.findViewById(R.id.buttonPreset3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initializeSeekBar(dialogView.findViewById(R.id.seekBarLength), dialogView.findViewById(R.id.textViewSeekbarLength), 3, 60, 11);
+                initializeSeekBar(dialogView.findViewById(R.id.seekBarNumtries), dialogView.findViewById(R.id.textViewSeekbarNumtries), 1, 50, 14);
+            }
+        });
     }
 }
