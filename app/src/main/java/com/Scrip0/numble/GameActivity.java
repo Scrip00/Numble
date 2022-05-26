@@ -3,6 +3,7 @@ package com.Scrip0.numble;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -151,6 +152,7 @@ public class GameActivity extends AppCompatActivity {
         if (!savedAndCompleted) saveGameToHistory(); // If loaded game was not previously completed
         Intent intent = new Intent(this, MainMenu.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
         finish();
     }
 

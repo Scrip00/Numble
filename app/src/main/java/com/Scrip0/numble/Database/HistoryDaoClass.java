@@ -25,8 +25,11 @@ public interface HistoryDaoClass {
     HistoryModel getData(int key);
 
     // Get last added model
-    @Query("select * from user order by time desc, 'key' desc limit 1")
+    @Query("select * from user where finished = '0' order by time desc, 'key' desc limit 1")
     HistoryModel selectLast();
+
+    @Query("select * from user order by time desc, 'key' desc limit 1")
+    HistoryModel selectLastSaved();
 
     @Query("select * from user where time like '%'||:date||'%' and won = '1' and finished = '1'")
     List<HistoryModel> getWonGames(String date);

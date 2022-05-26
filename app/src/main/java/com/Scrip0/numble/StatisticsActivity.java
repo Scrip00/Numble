@@ -127,7 +127,11 @@ public class StatisticsActivity extends AppCompatActivity {
             } else {
                 dataset.add(0f);
             }
-            colors.add(ContextCompat.getColor(this, R.color.cell_right));
+            if (i <= max / 3) {
+                colors.add(ContextCompat.getColor(this, R.color.cell_right));
+            } else if (i > max * 2 / 3) {
+                colors.add(ContextCompat.getColor(this, R.color.cell_wrong));
+            } else colors.add(ContextCompat.getColor(this, R.color.cell_close));
         }
 
         if (map.keySet().size() <= 1) {
@@ -135,7 +139,6 @@ public class StatisticsActivity extends AppCompatActivity {
             chart.notifyDataSetChanged();
         } else {
             initializeBarChart(chart);
-//            chart.getAxisLeft().setLabelCount((int) (allGamesCount / 2));
             createBarChart(chart, dataset, names, colors, allGamesCount);
         }
     }
@@ -178,7 +181,8 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void initializeWinBarChart(BarChart chart) {
-        chart.setNoDataText("You haven't played games for now");
+        chart.setNoDataText("No data");
+        chart.setNoDataTextColor(Color.BLACK);
 
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
         ArrayList<String> names = new ArrayList<>(Arrays.asList("Won", "Lost"));
@@ -195,7 +199,8 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void initializeWinBarChartMonth(BarChart chart) {
-        chart.setNoDataText("You haven't played games this month");
+        chart.setNoDataText("No data");
+        chart.setNoDataTextColor(Color.BLACK);
 
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
         ArrayList<String> names = new ArrayList<>(Arrays.asList("Won", "Lost"));
@@ -227,7 +232,8 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void initializeWinBarChartToday(BarChart chart) {
-        chart.setNoDataText("You haven't played games today yet");
+        chart.setNoDataText("No data");
+        chart.setNoDataTextColor(Color.BLACK);
 
         HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
         ArrayList<String> names = new ArrayList<>(Arrays.asList("Won", "Lost"));
@@ -310,13 +316,16 @@ public class StatisticsActivity extends AppCompatActivity {
             XAxis xAxis = chart.getXAxis();
             xAxis.setGranularity(1f);
             xAxis.setGranularityEnabled(true);
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(names));//setting String values in Xaxis
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(names));
             for (IDataSet set : chart.getData().getDataSets())
                 set.setDrawValues(!set.isDrawValuesEnabled());
 
             chart.getAxisLeft().setAxisMinimum(0);
             chart.getAxisLeft().setAxisMaximum(max);
-
+            if (max < 12)
+                chart.getAxisLeft().setLabelCount((int) max);
+            else
+                chart.getAxisLeft().setLabelCount(12);
             chart.invalidate();
         }
     }

@@ -25,12 +25,13 @@ public class ContinueSavedGameDialog extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_saved_game, null);
         builder.setView(dialogView)
-                .setPositiveButton("Start", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Intent gameIntent = new Intent(getActivity(), GameActivity.class);
                         gameIntent.putExtra("LoadSavedGame", true);
                         startActivity(gameIntent);
+                        ((Activity) dialogView.getContext()).overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         ((Activity) dialogView.getContext()).finish();
                     }
                 })

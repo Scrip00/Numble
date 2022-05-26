@@ -56,6 +56,7 @@ public class StartNewGameDialog extends DialogFragment {
                         gameIntent.putExtra("With_power", withPower.isChecked());
                         gameIntent.putExtra("With_fact", withFact.isChecked());
                         startActivity(gameIntent);
+                        ((Activity) dialogView.getContext()).overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         ((Activity) dialogView.getContext()).finish();
                     }
                 })

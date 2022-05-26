@@ -116,6 +116,10 @@ public class EquationSolver {
                 str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
                 break;
             case '/':
+                if (getNumberFromString(str, index + 1) == 0) {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1)) + (int) Math.sqrt(Integer.MAX_VALUE) + str.substring(index + getNumberLength(str, index + 1) + 1);
+                    break;
+                }
                 if ((getNumberFromString(str, getNumberStartIndex(str, index - 1)) % getNumberFromString(str, index + 1)) != 0)
                     isAnswerInt = false;
                 result = getNumberFromString(str, getNumberStartIndex(str, index - 1)) / getNumberFromString(str, index + 1);
@@ -124,7 +128,11 @@ public class EquationSolver {
             case '^':
                 result = (int) Math.pow(getNumberFromString(str, getNumberStartIndex(str, index - 1)), getNumberFromString(str, index + 1));
                 if (result == 0) result = (int) Math.sqrt(Integer.MAX_VALUE);
-                str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                if (testIfNegativeNumber(str, getNumberStartIndex(str, index - 1))) {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1) - 1) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                } else {
+                    str = str.substring(0, getNumberStartIndex(str, index - 1)) + result + str.substring(index + getNumberLength(str, index + 1) + 1);
+                }
                 break;
             case '!':
                 result = calcFactorial(getNumberFromString(str, getNumberStartIndex(str, index - 1)));

@@ -3,6 +3,7 @@ package com.Scrip0.numble.Dialogs;
 import static com.Scrip0.numble.ViewSavedGameActivity.generateShareText;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -10,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.Scrip0.numble.Cells.CellManager;
-import com.Scrip0.numble.CustomLayouts.Cell;
 import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
@@ -28,10 +27,7 @@ import com.Scrip0.numble.GameActivity;
 import com.Scrip0.numble.MainMenu;
 import com.Scrip0.numble.R;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
@@ -66,6 +62,7 @@ public class EndGameDialog extends DialogFragment {
                         gameIntent.putExtra("With_fact", withFact);
                         gameIntent.putExtra("Length", length);
                         gameIntent.putExtra("Numtries", numTries);
+                        ((Activity) dialogView.getContext()).overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         startActivity(gameIntent);
                     }
                 })
@@ -73,6 +70,7 @@ public class EndGameDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         Objects.requireNonNull(EndGameDialog.this.getDialog()).cancel();
                         Intent gameIntent = new Intent(getActivity(), MainMenu.class);
+                        ((Activity) dialogView.getContext()).overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         startActivity(gameIntent);
                     }
                 });
@@ -85,7 +83,7 @@ public class EndGameDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getActivity()).getDao();
-                HistoryModel game = database.selectLast();
+                HistoryModel game = database.selectLastSaved();
                 Intent si = new Intent(Intent.ACTION_SEND);
                 si.setType("text/plain");
                 si.putExtra(Intent.EXTRA_TEXT, generateShareText(game, manager));
