@@ -1,9 +1,20 @@
 package com.Scrip0.numble;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -20,11 +31,10 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +46,7 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-//
+
         BarChart winChart = findViewById(R.id.winStatChart);
         initializeWinBarChart(winChart);
 
@@ -54,6 +64,80 @@ public class StatisticsActivity extends AppCompatActivity {
 
         TextView textSettings = findViewById(R.id.text_settings);
         initializeTextSettings(textSettings);
+
+        Spinner spinner = findViewById(R.id.spinner);
+        initializeSpinner(spinner);
+    }
+
+    private void initializeSpinner(Spinner spinner) {
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getApplicationContext()).getDao();
+        HashMap<String, HashMap<Integer, Integer>> map = new HashMap<>();
+        for (HistoryModel model : database.getAllGames("")) {
+            String settings = model.getCells()[0].length + " X " + model.getCells().length;
+            if (model.isWon()) {
+                if (!map.containsKey(settings))
+                    map.put(settings, new HashMap<>());
+                if (!map.get(settings).containsKey(model.getCurrentRow())) {
+                    map.get(settings).put(model.getCurrentRow(), 0);
+                }
+                map.get(settings).put(model.getCurrentRow(), map.get(settings).get(model.getCurrentRow()) + 1);
+            }
+            if (!map.containsKey(settings))
+                map.put(settings, new HashMap<>());
+            if (!map.get(settings).containsKey(0)) {
+                map.get(settings).put(0, 0);
+            }
+            map.get(settings).put(0, map.get(settings).get(0) + 1);
+        }
+
+        ArrayList<String> keys = new ArrayList<>();
+        for (String key : map.keySet()) keys.add(key);
+        spinner.setAdapter(new ArrayAdapter(this, android.R.layout.simple_spinner_item, keys));
+        BarChart spinnerChart = findViewById(R.id.spinnerBarChart);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                initializeSpinnerBarChart(spinnerChart, map.get(spinner.getSelectedItem().toString()), Integer.parseInt(spinner.getSelectedItem().toString().split(" X ")[1]));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                initializeSpinnerBarChart(spinnerChart, map.get(spinner.getSelectedItem().toString()), Integer.parseInt(spinner.getSelectedItem().toString().split(" X ")[1]));
+            }
+        });
+    }
+
+    private void initializeSpinnerBarChart(BarChart chart, HashMap<Integer, Integer> map, int max) {
+        chart.setNoDataText("No data");
+        chart.setNoDataTextColor(Color.BLACK);
+
+        ArrayList<String> names = new ArrayList<>();
+        for (int i = 1; i <= max; i++)
+            names.add(String.valueOf(i));
+
+        float allGamesCount = 0;
+        if (map.containsKey(0)) allGamesCount = map.get(0);
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        ArrayList<Float> dataset = new ArrayList<Float>();
+
+        for (int i = 1; i <= max; i++) {
+            if (map.containsKey(i)) {
+                dataset.add(Float.valueOf(map.get(i)));
+            } else {
+                dataset.add(0f);
+            }
+            colors.add(ContextCompat.getColor(this, R.color.cell_right));
+        }
+
+        if (map.keySet().size() <= 1) {
+            chart.clear();
+            chart.notifyDataSetChanged();
+        } else {
+            initializeBarChart(chart);
+//            chart.getAxisLeft().setLabelCount((int) (allGamesCount / 2));
+            createBarChart(chart, dataset, names, colors, allGamesCount);
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -72,7 +156,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 setting = key;
                 max = map.get(setting);
             }
-            if (map.get(setting) >= max) {
+            if (map.get(setting) > max) {
                 setting = key;
                 max = map.get(setting);
             }
@@ -103,9 +187,11 @@ public class StatisticsActivity extends AppCompatActivity {
         ArrayList<Float> dataset = new ArrayList<Float>(Arrays.asList((float) database.getWonGames("").size(), (float) database.getLostGames("").size()));
 
         ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(ContextCompat.getColor(this, R.color.cell_right), ContextCompat.getColor(this, R.color.cell_wrong)));
-        initializeBarChart(chart);
-        if (dataset.size() > 0)
+
+        if (dataset.get(0) > 0) {
+            initializeBarChart(chart);
             createBarChart(chart, dataset, names, colors, allGamesCount);
+        }
     }
 
     private void initializeWinBarChartMonth(BarChart chart) {
@@ -133,9 +219,11 @@ public class StatisticsActivity extends AppCompatActivity {
         ArrayList<Float> dataset = new ArrayList<Float>(Arrays.asList((float) modelsWon.size(), (float) modelsLost.size()));
 
         ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(ContextCompat.getColor(this, R.color.cell_right), ContextCompat.getColor(this, R.color.cell_wrong)));
-        initializeBarChart(chart);
-        if (dataset.size() > 0)
+
+        if (dataset.get(0) > 0) {
+            initializeBarChart(chart);
             createBarChart(chart, dataset, names, colors, allGamesCount);
+        }
     }
 
     private void initializeWinBarChartToday(BarChart chart) {
@@ -151,15 +239,18 @@ public class StatisticsActivity extends AppCompatActivity {
         ArrayList<Float> dataset = new ArrayList<Float>(Arrays.asList((float) database.getWonGames(date).size(), (float) database.getLostGames(date).size()));
 
         ArrayList<Integer> colors = new ArrayList<>(Arrays.asList(ContextCompat.getColor(this, R.color.cell_right), ContextCompat.getColor(this, R.color.cell_wrong)));
-        initializeBarChart(chart);
-        if (dataset.size() > 0)
+
+        if (dataset.get(0) > 0) {
+            initializeBarChart(chart);
             createBarChart(chart, dataset, names, colors, allGamesCount);
+        }
     }
 
     private void initializeBarChart(BarChart chart) {
+        chart.clear();
         chart.getDescription().setEnabled(false);
 
-        chart.setMaxVisibleValueCount(2);
+        chart.setMaxVisibleValueCount(100);
         chart.getXAxis().setDrawGridLines(false);
         chart.setPinchZoom(false);
 
