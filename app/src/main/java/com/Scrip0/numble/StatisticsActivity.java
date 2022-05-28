@@ -1,5 +1,7 @@
 package com.Scrip0.numble;
 
+import static com.Scrip0.numble.GameActivity.loadAd;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -46,6 +48,8 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
+
+        loadAd(this);
 
         BarChart winChart = findViewById(R.id.winStatChart);
         initializeWinBarChart(winChart);
@@ -310,12 +314,13 @@ public class StatisticsActivity extends AppCompatActivity {
 
             BarData data = new BarData(dataSets);
             chart.setData(data);
-            chart.setVisibleXRange(1, dataset.size());
             chart.setFitBars(true);
 
             XAxis xAxis = chart.getXAxis();
             xAxis.setGranularity(1f);
             xAxis.setGranularityEnabled(true);
+            xAxis.setAxisMinimum(-1);
+            xAxis.setAxisMaximum(dataset.size());
             xAxis.setValueFormatter(new IndexAxisValueFormatter(names));
             for (IDataSet set : chart.getData().getDataSets())
                 set.setDrawValues(!set.isDrawValuesEnabled());

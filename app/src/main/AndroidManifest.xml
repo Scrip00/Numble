@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Numble">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-xxxxxxxxxxxxxxxxxxxxxxxxxxx"/>
+
         <activity
             android:name=".StatisticsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

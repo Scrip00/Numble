@@ -1,8 +1,12 @@
 package com.Scrip0.numble;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +14,7 @@ import android.widget.GridLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Scrip0.numble.Animations.LoadingAnimator;
@@ -21,6 +26,13 @@ import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
 import com.Scrip0.numble.Dialogs.EndGameDialog;
 import com.Scrip0.numble.EquationManagers.EquationGenerator;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +59,8 @@ public class GameActivity extends AppCompatActivity {
                     .setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_NO_EXCLUDE_DESCENDANTS);
         }
 
+        loadAd(this);
+
         nextBtn = findViewById(R.id.nextBtn);
         gridLayout = findViewById(R.id.grid_layout);
 
@@ -69,6 +83,43 @@ public class GameActivity extends AppCompatActivity {
             initSavedGame();
         } else {
             initNewGame(equationLength, numtries, withMult, withPower, withFact);
+        }
+    }
+
+    public static void loadAd(Activity activity) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(activity.getBaseContext());
+        int numAds = sharedPrefs.getInt("Ads", 0);
+        int maxAds = 7;
+        if (numAds >= maxAds) {
+            MobileAds.initialize(activity.getBaseContext(), new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                }
+            });
+            AdRequest adRequest = new AdRequest.Builder().build();
+
+            InterstitialAd.load(activity.getBaseContext(), "ca-app-pub-3940256099942544/1033173712", adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // The mInterstitialAd reference will be null until
+                            // an ad is loaded.
+                            interstitialAd.show(activity);
+                            SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
+                            sharedPrefsEditor.putInt("Ads", 0);
+                            sharedPrefsEditor.apply();
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+                            Log.d("Failed", String.valueOf(loadAdError));
+                        }
+                    });
+        } else {
+            SharedPreferences.Editor sharedPrefsEditor = sharedPrefs.edit();
+            sharedPrefsEditor.putInt("Ads", numAds + 1);
+            sharedPrefsEditor.apply();
         }
     }
 

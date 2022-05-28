@@ -1,5 +1,7 @@
 package com.Scrip0.numble;
 
+import static com.Scrip0.numble.GameActivity.loadAd;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +27,8 @@ public class ViewSavedGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_saved_game);
+
+        loadAd(this);
 
         int key = getIntent().getIntExtra("key", 0);
 
