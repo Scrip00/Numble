@@ -64,6 +64,7 @@ public class EndGameDialog extends DialogFragment {
                         gameIntent.putExtra("Numtries", numTries);
                         ((Activity) dialogView.getContext()).overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         startActivity(gameIntent);
+                        ((Activity) dialogView.getContext()).finish();
                     }
                 })
                 .setNegativeButton("Menu", new DialogInterface.OnClickListener() {
@@ -72,6 +73,7 @@ public class EndGameDialog extends DialogFragment {
                         Intent gameIntent = new Intent(getActivity(), MainMenu.class);
                         ((Activity) dialogView.getContext()).overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                         startActivity(gameIntent);
+                        ((Activity) dialogView.getContext()).finish();
                     }
                 });
         return builder.create();

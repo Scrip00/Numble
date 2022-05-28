@@ -8,7 +8,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -66,11 +65,10 @@ public class Cell extends FrameLayout {
                     textField.setText("");
                 }
 
-                if (!b && textField.getText().length() < 1) { // If focus lost, restore previous text
+                if (!b && textField.getText().length() < 1 && prevContent != null && prevContent.length() > 0) { // If focus lost, restore previous text
                     restoredText = true;
                     textField.setText(prevContent);
                 }
-
             }
         });
 
@@ -89,12 +87,23 @@ public class Cell extends FrameLayout {
             public void afterTextChanged(Editable editable) {
                 if (textField.getText().length() > 0 && !restoredText) { // If new text and text is not restored
                     textField.clearFocus();
-                    restoredText = true;
+                    restoredText = false;
                     if (next != null)
                         next.setFocus();
                 }
             }
         });
+    }
+
+    @Override
+    public void clearFocus() {
+        textField.clearFocus();
+        super.clearFocus();
+    }
+
+    @Override
+    public boolean isFocused() {
+        return textField.isFocused();
     }
 
     public void setFocus() {

@@ -13,10 +13,10 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-import com.Scrip0.numble.CustomLayouts.Cell;
-import com.Scrip0.numble.EquationManagers.EquationSolver;
-import com.Scrip0.numble.CustomLayouts.Keyboard;
 import com.Scrip0.numble.Animations.LoadingAnimator;
+import com.Scrip0.numble.CustomLayouts.Cell;
+import com.Scrip0.numble.CustomLayouts.Keyboard;
+import com.Scrip0.numble.EquationManagers.EquationSolver;
 import com.Scrip0.numble.R;
 
 public class CellManager {
@@ -145,7 +145,12 @@ public class CellManager {
                     GridLayout.LayoutParams param = new GridLayout.LayoutParams(GridLayout.spec(k, GridLayout.CENTER, 1F), GridLayout.spec(j, GridLayout.CENTER, 1F));
                     grid[k][j].setLayoutParams(param);
                     if (isRowFull && isCurrentEquationCorrect() || k > currentRow)
-                        grid[k][j].disableFocus();  // If row iss full or it's number is greater that playable row, disable focus
+                        grid[k][j].disableFocus();  // If row is full or it's number is greater that playable row, disable focus
+                    else {
+                        grid[k][j].setFocus();
+                        grid[k][j].setFocus();
+                        grid[k][j].clearFocus();
+                    }
                     if (j != 0) grid[k][j - 1].setNext(grid[k][j]);
                 }
                 if (isRowFull && isCurrentEquationCorrect()) { // Find playable row number
@@ -220,6 +225,13 @@ public class CellManager {
         }
         currentRow++;
         return won;
+    }
+
+    public void clearRowFocus() {
+        for (int i = 0; i < columnCount; i++) {
+            if (grid[currentRow][i] != null && grid[currentRow][i].isFocused() && grid[currentRow][i].isEnabled())
+                grid[currentRow][i].clearFocus();
+        }
     }
 
     private boolean isRowFull(Cell[] cells) {

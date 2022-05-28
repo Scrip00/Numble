@@ -11,8 +11,10 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:background="@null"
+        android:longClickable="false"
         android:maxLength="1"
         android:textAlignment="center"
         android:textColor="@color/black"
+        android:textIsSelectable="false"
         android:textSize="40sp" />
 </RelativeLayout>

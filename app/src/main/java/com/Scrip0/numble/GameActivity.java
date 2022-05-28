@@ -1,7 +1,6 @@
 package com.Scrip0.numble;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -12,10 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.Scrip0.numble.Animations.LoadingAnimator;
 import com.Scrip0.numble.Cells.CellManager;
@@ -37,6 +36,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -77,6 +78,13 @@ public class GameActivity extends AppCompatActivity {
         boolean withPower = getIntent().getBooleanExtra("With_power", true);
         boolean withFact = getIntent().getBooleanExtra("With_fact", true);
 
+        if (!withMult) {
+            keyboard.updateKeyColor("*", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
+            keyboard.updateKeyColor("/", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
+        }
+        if (!withPower) keyboard.updateKeyColor("^", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
+        if (!withFact) keyboard.updateKeyColor("!", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
+
         boolean loadSavedGame = getIntent().getBooleanExtra("LoadSavedGame", false);
 
         if (loadSavedGame) { // If it's not a new game
@@ -84,6 +92,7 @@ public class GameActivity extends AppCompatActivity {
         } else {
             initNewGame(equationLength, numtries, withMult, withPower, withFact);
         }
+        setUpGameLayoutListener();
     }
 
     public static void loadAd(Activity activity) {
@@ -136,7 +145,7 @@ public class GameActivity extends AppCompatActivity {
 //                        Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
                         manager.disableAll();
                         nextBtn.setOnClickListener(null);
-                        new EndGameDialog(manager, true).show(getSupportFragmentManager(), "end game dialog");
+                        startNewEndGameDialog(true);
                     } else if (manager.reachedEnd()) gameLost(equation);
                 } else {
                     gameLost(equation);
@@ -147,9 +156,20 @@ public class GameActivity extends AppCompatActivity {
 
     private void gameLost(String equation) {
         saveGameToHistory();
-        new EndGameDialog(manager, false).show(getSupportFragmentManager(), "end game dialog");
+        startNewEndGameDialog(false);
 //        Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
 //        Toast.makeText(getBaseContext(), equation, Toast.LENGTH_LONG).show();
+    }
+
+    private void startNewEndGameDialog(boolean won) {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                new EndGameDialog(manager, won).show(getSupportFragmentManager(), "end game dialog");
+                this.cancel();
+            }
+        }, 0, 1000);
     }
 
     private void initSavedGame() {
@@ -165,18 +185,28 @@ public class GameActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     if (!manager.reachedEnd()) {
                         if (manager.next()) {
-                            overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-                            Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
+                            saveGameToHistory();
+//                        Toast.makeText(getBaseContext(), "You won", Toast.LENGTH_SHORT).show();
                             manager.disableAll();
                             nextBtn.setOnClickListener(null);
-                        }
+                            startNewEndGameDialog(true);
+                        } else if (manager.reachedEnd()) gameLost(model.getEquation());
                     } else {
-                        Toast.makeText(getBaseContext(), "You lost", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getBaseContext(), model.getEquation(), Toast.LENGTH_LONG).show();
+                        gameLost(model.getEquation());
                     }
                 }
             });
         }
+    }
+
+    private void setUpGameLayoutListener() {
+        gameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (manager != null)
+                    manager.clearRowFocus();
+            }
+        });
     }
 
     private Cell[][] initCellsFromDatabase(char[][] c) {

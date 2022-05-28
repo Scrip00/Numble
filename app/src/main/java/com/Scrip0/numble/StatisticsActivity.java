@@ -3,20 +3,14 @@ package com.Scrip0.numble;
 import static com.Scrip0.numble.GameActivity.loadAd;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -36,7 +30,6 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,15 +112,14 @@ public class StatisticsActivity extends AppCompatActivity {
         for (int i = 1; i <= max; i++)
             names.add(String.valueOf(i));
 
-        float allGamesCount = 0;
-        if (map.containsKey(0)) allGamesCount = map.get(0);
         ArrayList<Integer> colors = new ArrayList<>();
 
         ArrayList<Float> dataset = new ArrayList<Float>();
-
+        int maxValue = 0;
         for (int i = 1; i <= max; i++) {
             if (map.containsKey(i)) {
                 dataset.add(Float.valueOf(map.get(i)));
+                if (map.get(i) > maxValue) maxValue = map.get(i);
             } else {
                 dataset.add(0f);
             }
@@ -143,7 +135,7 @@ public class StatisticsActivity extends AppCompatActivity {
             chart.notifyDataSetChanged();
         } else {
             initializeBarChart(chart);
-            createBarChart(chart, dataset, names, colors, allGamesCount);
+            createBarChart(chart, dataset, names, colors, maxValue + 1);
         }
     }
 
