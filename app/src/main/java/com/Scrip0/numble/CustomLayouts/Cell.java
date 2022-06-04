@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -40,6 +41,14 @@ public class Cell extends FrameLayout {
         super(context);
         this.keyboard = keyboard;
         initView();
+        color = DEFAULT;
+    }
+
+    public Cell(@NonNull Context context) {
+        super(context);
+        initView();
+        disableFocus();
+        this.keyboard = null;
         color = DEFAULT;
     }
 

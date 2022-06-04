@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
 import com.Scrip0.numble.Dialogs.ContinueSavedGameDialog;
+import com.Scrip0.numble.Dialogs.InfoDialog;
 import com.Scrip0.numble.Dialogs.StartNewGameDialog;
 
 public class MainMenu extends AppCompatActivity {
@@ -49,6 +51,19 @@ public class MainMenu extends AppCompatActivity {
                 startActivity(statsIntent);
             }
         });
+
+        ImageView infoIcon = findViewById(R.id.infoIcon);
+        infoIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+                new InfoDialog().show(getSupportFragmentManager(), "dialog");
+            }
+        });
+
+        HistoryDaoClass database = HistoryDatabaseClass.getDatabase(getBaseContext().getApplicationContext()).getDao();
+        if (database.getAllData().size() <= 0)
+            new InfoDialog().show(getSupportFragmentManager(), "dialog");
     }
 
     private void finishGame() {

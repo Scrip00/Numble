@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.Scrip0.numble.Database.HistoryDaoClass;
 import com.Scrip0.numble.Database.HistoryDatabaseClass;
 import com.Scrip0.numble.Database.HistoryModel;
 import com.Scrip0.numble.Dialogs.EndGameDialog;
+import com.Scrip0.numble.Dialogs.InfoDialog;
 import com.Scrip0.numble.EquationManagers.EquationGenerator;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
@@ -62,6 +64,15 @@ public class GameActivity extends AppCompatActivity {
 
         loadAd(this);
 
+        ImageView infoIcon = findViewById(R.id.infoIcon);
+        infoIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+                new InfoDialog().show(getSupportFragmentManager(), "dialog");
+            }
+        });
+
         nextBtn = findViewById(R.id.nextBtn);
         gridLayout = findViewById(R.id.grid_layout);
 
@@ -82,8 +93,10 @@ public class GameActivity extends AppCompatActivity {
             keyboard.updateKeyColor("*", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
             keyboard.updateKeyColor("/", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
         }
-        if (!withPower) keyboard.updateKeyColor("^", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
-        if (!withFact) keyboard.updateKeyColor("!", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
+        if (!withPower)
+            keyboard.updateKeyColor("^", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
+        if (!withFact)
+            keyboard.updateKeyColor("!", ContextCompat.getColor(getBaseContext(), R.color.cell_wrong));
 
         boolean loadSavedGame = getIntent().getBooleanExtra("LoadSavedGame", false);
 
@@ -107,7 +120,7 @@ public class GameActivity extends AppCompatActivity {
             });
             AdRequest adRequest = new AdRequest.Builder().build();
 
-            InterstitialAd.load(activity.getBaseContext(), "ca-app-pub-3940256099942544/1033173712", adRequest,
+            InterstitialAd.load(activity.getBaseContext(), "***", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {

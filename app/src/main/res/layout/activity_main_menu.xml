@@ -6,11 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainMenu">
 
+    <ImageView
+        android:id="@+id/infoIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_info" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/newGameBtn"
